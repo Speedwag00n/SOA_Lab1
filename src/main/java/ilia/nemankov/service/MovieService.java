@@ -16,4 +16,6 @@ public interface MovieService {
 
     void delete(Long id);
 
+    double getAvrgGoldenPalmCount();
+
 }

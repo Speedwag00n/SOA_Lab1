@@ -76,4 +76,21 @@ public class MovieServiceImpl implements MovieService {
     public void delete(Long id) {
         movieRepository.delete(id);
     }
+
+    @Override
+    public double getAvrgGoldenPalmCount() {
+        List<Movie> movies =  movieRepository.findAll();
+
+        double result = 0;
+
+        for (Movie movie : movies) {
+            result += movie.getGoldenPalmCount();
+        }
+
+        if (movies.size() == 0) {
+            return 0;
+        } else {
+            return result / movies.size();
+        }
+    }
 }
