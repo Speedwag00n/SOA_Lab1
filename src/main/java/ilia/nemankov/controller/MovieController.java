@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/api/movie")
@@ -37,7 +36,32 @@ public class MovieController extends HttpServlet {
         Long id = (Long) req.getAttribute("id");
 
         if (id == null) {
-            List<MovieDTO> movies = movieService.findAll();
+            FilterConfiguration filterConfiguration = new FilterConfiguration();
+            if (req.getParameter("count") != null) {
+                filterConfiguration.setCount(Integer.valueOf(req.getParameter("count")));
+
+                if (req.getParameter("page") != null) {
+                    filterConfiguration.setPage(Integer.valueOf(req.getParameter("page")));
+                } else {
+                    filterConfiguration.setPage(1);
+                }
+            }
+
+            if (req.getParameter("order") != null) {
+                filterConfiguration.setOrder(req.getParameterValues("order"));
+            }
+
+            if (req.getParameter("filter") != null) {
+                filterConfiguration.setFilter(req.getParameterValues("filter"));
+            }
+
+            System.out.println("Resultt");
+            System.out.println(filterConfiguration.getCount());
+            System.out.println(filterConfiguration.getPage());
+            System.out.println(filterConfiguration.getFilter());
+            System.out.println(filterConfiguration.getOrder());
+
+            List<MovieDTO> movies = movieService.findAll(filterConfiguration);
 
             if (movies != null) {
                 writer.write(gson.toJson(movies));

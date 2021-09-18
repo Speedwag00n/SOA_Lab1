@@ -1,12 +1,13 @@
 package ilia.nemankov.service;
 
+import ilia.nemankov.controller.FilterConfiguration;
 import ilia.nemankov.dto.MovieDTO;
 
 import java.util.List;
 
 public interface MovieService {
 
-    List<MovieDTO> findAll();
+    List<MovieDTO> findAll(FilterConfiguration filterConfiguration);
 
     MovieDTO save(MovieDTO dto);
 

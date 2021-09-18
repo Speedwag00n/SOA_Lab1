@@ -1,5 +1,6 @@
 package ilia.nemankov.service;
 
+import ilia.nemankov.controller.FilterConfiguration;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.entity.Movie;
 import ilia.nemankov.mapper.MovieMapper;
@@ -24,8 +25,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> findAll() {
-        List<Movie> movies =  movieRepository.findAll();
+    public List<MovieDTO> findAll(FilterConfiguration filterConfiguration) {
+        List<Movie> movies =  movieRepository.findAll(filterConfiguration);
 
         List<MovieDTO> result = new ArrayList<>();
 
