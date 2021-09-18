@@ -4,7 +4,6 @@ package ilia.nemankov.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ilia.nemankov.dto.MovieDTO;
-import ilia.nemankov.entity.Movie;
 import ilia.nemankov.service.MovieService;
 import ilia.nemankov.service.MovieServiceImpl;
 
@@ -15,15 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/api/less")
-public class LessTotalBoxOfficeController extends HttpServlet {
+@WebServlet("/api/contains")
+public class NameContainsController extends HttpServlet {
     private final MovieService movieService;
     private final GsonBuilder gsonBuilder;
 
-    public LessTotalBoxOfficeController() {
+    public NameContainsController() {
         this.movieService = new MovieServiceImpl();
         this.gsonBuilder = new GsonBuilder();
     }
@@ -35,16 +33,16 @@ public class LessTotalBoxOfficeController extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         Gson gson = gsonBuilder.create();
 
-        if (req.getParameter("lessThan") == null) {
+        if (req.getParameter("name") == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("lessThan parameter must be specified"));
+            resp.getWriter().write(gson.toJson("name parameter must be specified"));
             return;
         }
 
-        double lessThan = Double.parseDouble(req.getParameter("lessThan"));
+        String name = req.getParameter("name");
 
         FilterConfiguration filterConfiguration = new FilterConfiguration();
-        filterConfiguration.setFilter(new String[]{"totalBoxOffice,<," + lessThan});
+        filterConfiguration.setFilter(new String[]{"name,contains," + name});
         List<MovieDTO> movies = movieService.findAll(filterConfiguration);
 
         if (movies != null) {

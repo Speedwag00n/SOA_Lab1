@@ -55,12 +55,6 @@ public class MovieController extends HttpServlet {
                 filterConfiguration.setFilter(req.getParameterValues("filter"));
             }
 
-            System.out.println("Resultt");
-            System.out.println(filterConfiguration.getCount());
-            System.out.println(filterConfiguration.getPage());
-            System.out.println(filterConfiguration.getFilter());
-            System.out.println(filterConfiguration.getOrder());
-
             List<MovieDTO> movies = movieService.findAll(filterConfiguration);
 
             if (movies != null) {
