@@ -18,5 +18,5 @@ VALUES (0, 0),
 
 INSERT INTO MOVIE (NAME, COORDINATES, CREATION_DATE, OSCARS_COUNT, GOLDEN_PALM_COUNT, TOTAL_BOX_OFFICE, MPAA_RATING, SCREEN_WRITER)
 VALUES ('Howl''s Moving Castle', 5, '2004-01-01', 2, 2, 236214446, 'PG', 1),
-       ('The Lord of the Rings: The Return of the King', 1, '2003-01-01', 11, 5, 1140682011, 'PG_13', 3),
+       ('The Lord of the Rings: The Return of the King', 1, '2003-01-01', 11, 5, 1140682011, 'PG_13', null),
        ('Sen and Chihiro''s Spiriting Away', 6, '2004-01-01', 3, 3, 355467076, 'PG', 1);

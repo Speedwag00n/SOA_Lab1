@@ -27,7 +27,8 @@ Vue.component(
                             <td>{{ movie.goldenPalmCount }}</td>
                             <td>{{ movie.totalBoxOffice }}</td>
                             <td>{{ movie.mpaaRating }}</td>
-                            <td>Id: {{ movie.screenWriter.id }} ({{ movie.screenWriter.name }})</td>
+                            <td v-if="movie.screenWriter">Id: {{ movie.screenWriter.id }} ({{ movie.screenWriter.name }})</td>
+                            <td v-else>None</td>
                             <td><button class="btn btn-danger" v-on:click="deleteMovie(movie)" type="submit">Delete</button></td>
                         </tr>
                     </table>

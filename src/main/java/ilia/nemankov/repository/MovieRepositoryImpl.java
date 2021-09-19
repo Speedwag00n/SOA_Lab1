@@ -94,7 +94,11 @@ public class MovieRepositoryImpl implements MovieRepository {
                                 if (parts[0].equals("creationDate")) {
                                     predicates.add(criteriaBuilder.equal(root.<Date>get(parts[0]), formatter.parse(parts[2])));
                                 } else if (parts[0].equals("coordinates") || parts[0].equals("screenWriter")) {
-                                    predicates.add(criteriaBuilder.equal(root.get(parts[0]).get("id"), parts[2]));
+                                    if (parts[0].equals("screenWriter") && parts[2].equals("None")) {
+                                        predicates.add(criteriaBuilder.isNull(root.get(parts[0]).get("id")));
+                                    } else {
+                                        predicates.add(criteriaBuilder.equal(root.get(parts[0]).get("id"), parts[2]));
+                                    }
                                 } else if (parts[0].equals("mpaaRating")) {
                                     predicates.add(criteriaBuilder.equal(root.get(parts[0]), MPAARating.valueOf(parts[2])));
                                 } else {

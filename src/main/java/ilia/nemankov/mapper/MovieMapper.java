@@ -36,7 +36,9 @@ public class MovieMapper {
         movieDTO.setGoldenPalmCount(entity.getGoldenPalmCount());
         movieDTO.setTotalBoxOffice(entity.getTotalBoxOffice());
         movieDTO.setMpaaRating(entity.getMpaaRating());
-        movieDTO.setScreenWriter(personMapper.entityToDto(entity.getScreenWriter()));
+        if (entity.getScreenWriter() != null) {
+            movieDTO.setScreenWriter(personMapper.entityToDto(entity.getScreenWriter()));
+        }
 
         return movieDTO;
     }
