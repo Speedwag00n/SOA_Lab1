@@ -95,6 +95,8 @@ Vue.component(
                         <input id="orderDirectionAsc" type="radio" value="a" v-model="orderDirection">
                         <label for="orderDirectionDesc" class="pl-3">Desc</label>
                         <input id="orderDirectionDesc" type="radio" value="d" v-model="orderDirection">
+                        <label for="orderDirectionNone" class="pl-3">None</label>
+                        <input id="orderDirectionNone" type="radio" value="" v-model="orderDirection">
                     </div>
                     
                     <h3>Filter</h3>
@@ -232,6 +234,92 @@ Vue.component(
                     'filterByTotalBoxOfficeAction': this.filterByTotalBoxOfficeAction,
                     'filterByRating': this.filterByRating,
                     'filterByScreenWriter': this.filterByScreenWriter
+                });
+            }
+        }
+    }
+);
+
+Vue.component(
+    'add-movie',
+    {
+        template:
+            `
+            <div>
+                <h1 class="col-xs-1 text-center">Add movie</h1>
+                <div>
+                    <label for="name">Name</label>
+                    <input id="name" type="text" maxlength="256" v-model="name">
+                </div>
+                <div>
+                    <label for="coordinates">Coordinates</label>
+                    <select v-model="coordinates">
+                        <option v-for="coord in coordinateslist" v-bind:value="coord.id" name="coordinates">Id: {{coord.id}} (X: {{coord.x}}. Y: {{coord.y}})</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="creationDate">Creation date</label>
+                    <input id="creationDate" type="text" maxlength="10" v-model="creationDate">
+                </div>
+                <div>
+                    <label for="oscarsCount">Oscars count</label>
+                    <input id="oscarsCount" type="text" maxlength="10" v-model="oscarsCount">
+                </div>
+                <div>
+                    <label for="goldenPalmCount">Golden palm count</label>
+                    <input id="goldenPalmCount" type="text" maxlength="10" v-model="goldenPalmCount">
+                </div>
+                <div>
+                    <label for="totalBoxOffice">Total box office</label>
+                    <input id="totalBoxOffice" type="text" maxlength="10" v-model="totalBoxOffice">
+                </div>
+                <div>
+                    <label for="mpaaRating">MPAA Rating</label>
+                    
+                    <label for="filterByRatingG" class="pl-5">G</label>
+                    <input id="filterByRatingG" type="radio" value="G" v-model="mpaaRating" name="mpaaRating">
+                    <label for="filterByRatingPG" class="pl-5">PG</label>
+                    <input id="filterByRatingPG" type="radio" value="PG" v-model="mpaaRating" name="mpaaRating">
+                    <label for="filterByRatingPG13" class="pl-5">PG_13</label>
+                    <input id="filterByRatingPG13" type="radio" value="PG_13" v-model="mpaaRating" name="mpaaRating">
+                    <label for="filterByRatingNC17" class="pl-5">NC_17</label>
+                    <input id="filterByRatingNC17" type="radio" value="NC_17" v-model="mpaaRating" name="mpaaRating">
+                </div>
+                <div>
+                    <label for="screenWriter">Screen writer</label>
+                    <select v-model="screenWriter">
+                        <option v-for="person in personslist" v-bind:value="person.id" name="screenWriter" >Id: {{person.id}} ({{person.name}})</option>
+                        <option name="screenWriter" v-bind:value="0">None</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-info" v-on:click="addMovie()" type="submit">Add</button>
+            </div>
+            `,
+
+        props: ["personslist", "coordinateslist"],
+        data: function() {
+            return {
+                name: '',
+                coordinates: '',
+                oscarsCount: '',
+                goldenPalmCount: '',
+                totalBoxOffice: '',
+                mpaaRating: '',
+                screenWriter: ''
+            }
+        },
+        methods: {
+            addMovie: function () {
+                this.$emit('addmovie', {
+                    'name': this.name,
+                    'coordinates': this.coordinates,
+                    'creationDate': this.creationDate,
+                    'oscarsCount': this.oscarsCount,
+                    'goldenPalmCount': this.goldenPalmCount,
+                    'totalBoxOffice': this.totalBoxOffice,
+                    'mpaaRating': this.mpaaRating,
+                    'screenWriter': this.screenWriter
                 });
             }
         }

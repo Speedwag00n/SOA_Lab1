@@ -80,15 +80,9 @@ public class MovieRepositoryImpl implements MovieRepository {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
                 for (String filter : filterConfiguration.getFilter()) {
-                    System.out.println(filter);
                     String[] parts = filter.split(",");
 
                     if (parts.length == 3) {
-                        System.out.println(parts[0]);
-                        System.out.println(parts[1]);
-                        System.out.println(parts[2]);
-                        System.out.println();
-
                         switch (parts[1]) {
                             case "==":
                                 if (parts[0].equals("creationDate")) {

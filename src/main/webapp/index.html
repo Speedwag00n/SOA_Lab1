@@ -17,7 +17,8 @@
 <body>
 <div id="app" class="pl-5 pr-5">
     <filters v-on:filter="filter"></filters>
-    <result-table v-bind:movies="movies" v-on:filter="filter" v-on:deletemovie="deleteMovie"></result-table>
+    <result-table v-bind:movies="movies" v-on:deletemovie="deleteMovie"></result-table>
+    <add-movie v-on:addmovie="addMovie" v-bind:personsList="personsList" v-bind:coordinatesList="coordinatesList"></add-movie>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
@@ -31,7 +32,8 @@
         data: function() {
             return {
                 movies: [],
-                currentR: ''
+                coordinatesList: [],
+                personsList: []
             }
         },
         methods: {
@@ -46,7 +48,7 @@
                     }
                 }
 
-                if (filterInfo.orderBy !== 'none') {
+                if (filterInfo.orderBy !== 'none' && filterInfo.orderDirection) {
                     params.push('order=' + filterInfo.orderBy + ',' + filterInfo.orderDirection)
                 }
 
@@ -104,6 +106,20 @@
                         }
                     }
                 );
+            },
+            addMovie: function (movie) {
+                this.$http.post(
+                    'http://localhost:8080/SOA_Lab1_war/api/movie',
+                    movie
+                ).then(
+                    (response) => {
+                        this.movies.push(response.body);
+                    },
+                    (error) => {
+                        if (error.status == 403 || error.status == 0) {
+                        }
+                    }
+                );
             }
         },
         created: function() {
@@ -114,6 +130,34 @@
             ).then(
                 (response) => {
                     this.movies = response.body;
+                },
+                (error) => {
+                    if (error.status == 403 || error.status == 0) {
+                    }
+                }
+            );
+
+            this.$http.get(
+                'http://localhost:8080/SOA_Lab1_war/api/coordinates',
+                {
+                }
+            ).then(
+                (response) => {
+                    this.coordinatesList = response.body;
+                },
+                (error) => {
+                    if (error.status == 403 || error.status == 0) {
+                    }
+                }
+            );
+
+            this.$http.get(
+                'http://localhost:8080/SOA_Lab1_war/api/person',
+                {
+                }
+            ).then(
+                (response) => {
+                    this.personsList = response.body;
                 },
                 (error) => {
                     if (error.status == 403 || error.status == 0) {

@@ -66,8 +66,10 @@ public class MovieFilter implements Filter {
                 dto.setTotalBoxOffice(json.get("totalBoxOffice").getAsDouble());
                 dto.setMpaaRating(MPAARating.valueOf(json.get("mpaaRating").getAsString()));
                 PersonDTO personDTO = new PersonDTO();
-                personDTO.setId(json.get("screenWriter").getAsLong());
-                dto.setScreenWriter(personDTO);
+                if (json.get("screenWriter") != null && json.get("screenWriter").getAsLong() != 0) {
+                    personDTO.setId(json.get("screenWriter").getAsLong());
+                    dto.setScreenWriter(personDTO);
+                }
 
                 req.setAttribute("movie", dto);
             }

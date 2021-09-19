@@ -20,7 +20,9 @@ public class MovieMapper {
         movie.setGoldenPalmCount(dto.getGoldenPalmCount());
         movie.setTotalBoxOffice(dto.getTotalBoxOffice());
         movie.setMpaaRating(dto.getMpaaRating());
-        movie.setScreenWriter(personMapper.dtoToEntity(dto.getScreenWriter()));
+        if (dto.getScreenWriter() != null) {
+            movie.setScreenWriter(personMapper.dtoToEntity(dto.getScreenWriter()));
+        }
 
         return movie;
     }
