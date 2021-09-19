@@ -29,7 +29,10 @@ Vue.component(
                             <td>{{ movie.mpaaRating }}</td>
                             <td v-if="movie.screenWriter">Id: {{ movie.screenWriter.id }} ({{ movie.screenWriter.name }})</td>
                             <td v-else>None</td>
-                            <td><button class="btn btn-danger" v-on:click="deleteMovie(movie)" type="submit">Delete</button></td>
+                            <td>
+                                <button class="btn btn-success" v-on:click="editMovie(movie)" type="submit">Edit</button>
+                                <button class="btn btn-danger" v-on:click="deleteMovie(movie)" type="submit">Delete</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -42,6 +45,9 @@ Vue.component(
             }
         },
         methods: {
+            editMovie: function (movie) {
+                this.$emit('editmovie', movie);
+            },
             deleteMovie: function (movie) {
                 this.$emit('deletemovie', movie);
             }
@@ -246,7 +252,11 @@ Vue.component(
         template:
             `
             <div>
-                <h1 class="col-xs-1 text-center">Add movie</h1>
+                <h1 class="col-xs-1 text-center">Add/update movie</h1>
+                <div>
+                    <label for="id">Id</label>
+                    <input id="id" type="text" maxlength="10" v-model="id">
+                </div>
                 <div>
                     <label for="name">Name</label>
                     <input id="name" type="text" maxlength="256" v-model="name">
@@ -293,13 +303,15 @@ Vue.component(
                     </select>
                 </div>
                 
-                <button class="btn btn-info" v-on:click="addMovie()" type="submit">Add</button>
+                <button v-if="id" class="btn btn-info" v-on:click="addMovie()" type="submit">Update</button>
+                <button v-else class="btn btn-info" v-on:click="addMovie()" type="submit">Add</button>
             </div>
             `,
 
         props: ["personslist", "coordinateslist"],
         data: function() {
             return {
+                id: '',
                 name: '',
                 coordinates: '',
                 oscarsCount: '',
@@ -311,7 +323,7 @@ Vue.component(
         },
         methods: {
             addMovie: function () {
-                this.$emit('addmovie', {
+                let movie = {
                     'name': this.name,
                     'coordinates': this.coordinates,
                     'creationDate': this.creationDate,
@@ -320,7 +332,23 @@ Vue.component(
                     'totalBoxOffice': this.totalBoxOffice,
                     'mpaaRating': this.mpaaRating,
                     'screenWriter': this.screenWriter
-                });
+                }
+                if (this.id) {
+                    movie.id = this.id
+                }
+
+                this.$emit('addmovie', movie);
+            },
+            updateFields: function(movie) {
+                this.id = movie.id
+                this.name = movie.name
+                this.coordinates = movie.coordinates
+                this.creationDate = movie.creationDate
+                this.oscarsCount = movie.oscarsCount
+                this.goldenPalmCount = movie.goldenPalmCount
+                this.totalBoxOffice = movie.totalBoxOffice
+                this.mpaaRating = movie.mpaaRating
+                this.screenWriter = movie.screenWriter
             }
         }
     }

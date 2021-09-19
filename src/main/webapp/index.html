@@ -17,8 +17,9 @@
 <body>
 <div id="app" class="pl-5 pr-5">
     <filters v-on:filter="filter"></filters>
-    <result-table v-bind:movies="movies" v-on:deletemovie="deleteMovie"></result-table>
-    <add-movie v-on:addmovie="addMovie" v-bind:personsList="personsList" v-bind:coordinatesList="coordinatesList"></add-movie>
+    <result-table v-bind:movies="movies" v-on:deletemovie="deleteMovie" v-on:editmovie="editMovie"></result-table>
+    <add-movie v-on:addmovie="addMovie" v-bind:personsList="personsList"
+               v-bind:coordinatesList="coordinatesList" ref="mainform"></add-movie>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
@@ -29,12 +30,10 @@
 <script>
     var app = new Vue({
         el: '#app',
-        data: function() {
-            return {
-                movies: [],
-                coordinatesList: [],
-                personsList: []
-            }
+        data: {
+            movies: [],
+            coordinatesList: [],
+            personsList: []
         },
         methods: {
             filter: function(filterInfo) {
@@ -108,18 +107,38 @@
                 );
             },
             addMovie: function (movie) {
-                this.$http.post(
-                    'http://localhost:8080/SOA_Lab1_war/api/movie',
-                    movie
-                ).then(
-                    (response) => {
-                        this.movies.push(response.body);
-                    },
-                    (error) => {
-                        if (error.status == 403 || error.status == 0) {
+                if (movie.id) {
+                    this.$http.put(
+                        'http://localhost:8080/SOA_Lab1_war/api/movie',
+                        movie
+                    ).then(
+                        (response) => {
+                            this.movies.push(response.body);
+                        },
+                        (error) => {
+                            if (error.status == 403 || error.status == 0) {
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    this.$http.post(
+                        'http://localhost:8080/SOA_Lab1_war/api/movie',
+                        movie
+                    ).then(
+                        (response) => {
+                            this.movies.push(response.body);
+                        },
+                        (error) => {
+                            if (error.status == 403 || error.status == 0) {
+                            }
+                        }
+                    );
+                }
+            },
+            editMovie: function (movie) {
+                console.log(movie)
+                this.$refs.mainform.$el.scrollIntoView({ behavior: 'smooth' });
+                this.$refs.mainform.updateFields(movie);
             }
         },
         created: function() {
