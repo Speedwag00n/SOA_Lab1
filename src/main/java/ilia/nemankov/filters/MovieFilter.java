@@ -59,7 +59,7 @@ public class MovieFilter implements Filter {
                 dto.setName(json.get("name").getAsString());
                 CoordinatesDTO coordinatesDTO = new CoordinatesDTO();
                 coordinatesDTO.setId(json.get("coordinates").getAsLong());
-                dto.setCoordinatesDTO(coordinatesDTO);
+                dto.setCoordinates(coordinatesDTO);
                 dto.setCreationDate(formatter.parse(json.get("creationDate").getAsString()));
                 dto.setOscarsCount(json.get("oscarsCount").getAsInt());
                 dto.setGoldenPalmCount(json.get("goldenPalmCount").getAsLong());

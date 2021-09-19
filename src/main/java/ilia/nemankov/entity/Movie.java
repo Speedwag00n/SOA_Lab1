@@ -45,5 +45,5 @@ public class Movie {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "SCREEN_WRITER")
-    private Person screenwriter;
+    private Person screenWriter;
 }

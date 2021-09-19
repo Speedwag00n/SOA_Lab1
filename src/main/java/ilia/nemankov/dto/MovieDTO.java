@@ -11,7 +11,7 @@ import java.util.Date;
 public class MovieDTO {
     private Long id;
     private String name;
-    private CoordinatesDTO coordinatesDTO;
+    private CoordinatesDTO coordinates;
     private Date creationDate;
     private Integer oscarsCount;
     private Long goldenPalmCount;

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Сервис-ориентированная архитектура, лабораторная работа #1</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/base-platform-dependent.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/main-platform-dependent.css">
+    <link rel="stylesheet" type="text/css" href="css/thirdparty/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/thirdparty/bootstrap-table.min.css">
+</head>
+
+<body>
+<div id="app" class="pl-5 pr-5">
+    <filters v-on:filter="filter"></filters>
+    <result-table v-bind:movies="movies" v-on:filter="filter"></result-table>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-resource"></script>
+<script src="js/basic-components.js"></script>
+<script src="js/main-components.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                movies: [],
+                currentR: ''
+            }
+        },
+        methods: {
+            filter: function(filterInfo) {
+                let params = []
+
+                if (filterInfo.elementsCount) {
+                    params.push('count=' + filterInfo.elementsCount)
+
+                    if (filterInfo.pageNumber) {
+                        params.push('page=' + filterInfo.pageNumber)
+                    }
+                }
+
+                if (filterInfo.orderBy !== 'none') {
+                    params.push('order=' + filterInfo.orderBy + ',' + filterInfo.orderDirection)
+                }
+
+                params = params.join('&')
+
+                this.$http.get(
+                    'http://localhost:8080/SOA_Lab1_war/api/movie?' + params
+                ).then(
+                    (response) => {
+                        this.movies = response.body;
+                    },
+                    (error) => {
+                        if (error.status == 403 || error.status == 0) {
+                        }
+                    }
+                );
+            },
+            deleteMovie: function (movie) {
+                this.$http.delete(
+                    'http://localhost:8080/SOA_Lab1_war/api/movie?id=' + movie.id
+                ).then(
+                    (response) => {
+                        this.movies.splice(this.movies.indexOf(movie), 1);
+                    },
+                    (error) => {
+                        if (error.status == 403 || error.status == 0) {
+                        }
+                    }
+                );
+            }
+        },
+        created: function() {
+            this.$http.get(
+                'http://localhost:8080/SOA_Lab1_war/api/movie',
+                {
+                }
+            ).then(
+                (response) => {
+                    this.movies = response.body;
+                },
+                (error) => {
+                    if (error.status == 403 || error.status == 0) {
+                    }
+                }
+            );
+        }
+    })
+</script>
+</body>
+
+</html>

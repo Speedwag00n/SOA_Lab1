@@ -41,8 +41,8 @@ public class MovieServiceImpl implements MovieService {
     public MovieDTO save(MovieDTO dto) {
         Movie movie = movieMapper.dtoToEntity(dto);
         movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
-        if (movie.getScreenwriter() != null) {
-            movie.setScreenwriter(personRepository.findById(movie.getScreenwriter().getId()));
+        if (movie.getScreenWriter() != null) {
+            movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
         }
 
         movieRepository.save(movie);
@@ -64,8 +64,8 @@ public class MovieServiceImpl implements MovieService {
     public MovieDTO update(MovieDTO newValue) {
         Movie movie = movieMapper.dtoToEntity(newValue);
         movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
-        if (movie.getScreenwriter() != null) {
-            movie.setScreenwriter(personRepository.findById(movie.getScreenwriter().getId()));
+        if (movie.getScreenWriter() != null) {
+            movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
         }
 
         MovieDTO updatedValue;
