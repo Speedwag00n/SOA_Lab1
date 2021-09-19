@@ -55,14 +55,16 @@ Vue.component(
             `
                 <div>
                     <h1 class="col-xs-1 text-center">Options</h1>
-                    <h2>Pagination</h2>
+                    
+                    <h3>Pagination</h3>
                     <div>
                         <label for="elementsCount">Elements count:</label>
                         <input id="elementsCount" type="text" maxlength="10" v-model="elementsCount">
                         <label for="pageNumber" class="ml-5">Page number</label>
                         <input id="pageNumber" type="text" maxlength="10" v-model="pageNumber">
                     </div>
-                    <h2>Order by</h2>
+                    
+                    <h3>Order by</h3>
                     <div>
                         <label for="orderById">Id</label>
                         <input id="orderById" type="radio" value="id" v-model="orderBy">
@@ -85,13 +87,105 @@ Vue.component(
                         <label for="orderByNone" class="pl-3">None</label>
                         <input id="orderByNone" type="radio" value="none" v-model="orderBy" checked>
                     </div>
-                    <h2>Order direction</h2>
+                    
+                    <h3>Order direction</h3>
                     <div>
                         <label for="orderDirectionAsc">Asc</label>
-                        <input id="orderDirectionAsc" type="radio" value="a" v-model="orderDirection" checked>
+                        <input id="orderDirectionAsc" type="radio" value="a" v-model="orderDirection">
                         <label for="orderDirectionDesc" class="pl-3">Desc</label>
                         <input id="orderDirectionDesc" type="radio" value="d" v-model="orderDirection">
                     </div>
+                    
+                    <h3>Filter</h3>
+                    <div>
+                        <label for="filterById">Id</label>
+                        <input id="filterById" type="text" maxlength="10" v-model="filterById">
+                    </div>
+                    <div>
+                        <label for="filterByName">Name</label>
+                        <input id="filterByName" type="text" maxlength="256" v-model="filterByName">
+                    </div>
+                    <div>
+                        <label for="filterByCoordinates">Coordinates</label>
+                        <input id="filterByCoordinates" type="text" maxlength="10" v-model="filterByCoordinates">
+                    </div>
+                    <div>
+                        <label for="filterByCreationDate">Creation date</label>
+                        <input id="filterByCreationDate" type="text" maxlength="10" v-model="filterByCreationDate">
+                        
+                        <label for="filterByCreationDateActionLess" class="pl-5"><</label>
+                        <input id="filterByCreationDateActionLess" type="radio" value="<" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
+                        <label for="filterByCreationDateActionEqual" class="pl-5">==</label>
+                        <input id="filterByCreationDateActionEqual" type="radio" value="==" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
+                        <label for="filterByCreationDateActionGreater" class="pl-5">\></label>
+                        <input id="filterByCreationDateActionGreater" type="radio" value=">" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
+                        <label for="filterByCreationDateActionLessEqual" class="pl-5"><=</label>
+                        <input id="filterByCreationDateActionLessEqual" type="radio" value="<=" v-model="filterByCreationDateAction" name="filterByCreationDateAction">     
+                        <label for="filterByCreationDateActionGreaterEqual" class="pl-5">>=</label>
+                        <input id="filterByCreationDateActionGreaterEqual" type="radio" value=">=" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
+                    </div>
+                    <div>
+                        <label for="filterByOscarCount">Oscars count</label>
+                        <input id="filterByOscarCount" type="text" maxlength="10" v-model="filterByOscarCount">
+                        
+                        <label for="filterByOscarCountActionLess" class="pl-5"><</label>
+                        <input id="filterByOscarCountActionLess" type="radio" value="<" v-model="filterByOscarCountAction" name="filterByOscarCountAction">
+                        <label for="filterByOscarCountActionEqual" class="pl-5">==</label>
+                        <input id="filterByOscarCountActionEqual" type="radio" value="==" v-model="filterByOscarCountAction" name="filterByOscarCountAction">
+                        <label for="filterByOscarCountActionGreater" class="pl-5">\></label>
+                        <input id="filterByOscarCountActionGreater" type="radio" value=">" v-model="filterByOscarCountAction" name="filterByOscarCountAction">
+                        <label for="filterByOscarCountActionLessEqual" class="pl-5"><=</label>
+                        <input id="filterByOscarCountActionLessEqual" type="radio" value="<=" v-model="filterByOscarCountAction" name="filterByOscarCountAction">     
+                        <label for="filterByOscarCountActionGreaterEqual" class="pl-5">>=</label>
+                        <input id="filterByOscarCountActionGreaterEqual" type="radio" value=">=" v-model="filterByOscarCountAction" name="filterByOscarCountAction">
+                    </div>
+                    <div>
+                        <label for="filterByGoldenPalmCount">Golden palm count</label>
+                        <input id="filterByGoldenPalmCount" type="text" maxlength="10" v-model="filterByGoldenPalmCount">
+                        
+                        <label for="filterByGoldenPalmCountActionLess" class="pl-5"><</label>
+                        <input id="filterByGoldenPalmCountActionLess" type="radio" value="<" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">
+                        <label for="filterByGoldenPalmCountActionEqual" class="pl-5">==</label>
+                        <input id="filterByGoldenPalmCountActionEqual" type="radio" value="==" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">
+                        <label for="filterByGoldenPalmCountActionGreater" class="pl-5">\></label>
+                        <input id="filterByGoldenPalmCountActionGreater" type="radio" value=">" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">
+                        <label for="filterByGoldenPalmCountActionLessEqual" class="pl-5"><=</label>
+                        <input id="filterByGoldenPalmCountActionLessEqual" type="radio" value="<=" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">     
+                        <label for="filterByGoldenPalmCountActionGreaterEqual" class="pl-5">>=</label>
+                        <input id="filterByGoldenPalmCountActionGreaterEqual" type="radio" value=">=" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">
+                    </div>
+                    <div>
+                        <label for="filterByTotalBoxOffice">Total box office</label>
+                        <input id="filterByTotalBoxOffice" type="text" maxlength="10" v-model="filterByTotalBoxOffice">
+                        
+                        <label for="filterByTotalBoxOfficeActionLess" class="pl-5"><</label>
+                        <input id="filterByTotalBoxOfficeActionLess" type="radio" value="<" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">
+                        <label for="filterByTotalBoxOfficeActionEqual" class="pl-5">==</label>
+                        <input id="filterByTotalBoxOfficeActionEqual" type="radio" value="==" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">
+                        <label for="filterByTotalBoxOfficeActionGreater" class="pl-5">\></label>
+                        <input id="filterByTotalBoxOfficeActionGreater" type="radio" value=">" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">
+                        <label for="filterByTotalBoxOfficeActionLessEqual" class="pl-5"><=</label>
+                        <input id="filterByTotalBoxOfficeActionLessEqual" type="radio" value="<=" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">     
+                        <label for="filterByTotalBoxOfficeActionGreaterEqual" class="pl-5">>=</label>
+                        <input id="filterByTotalBoxOfficeActionGreaterEqual" type="radio" value=">=" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">
+                    </div>
+                    <div>
+                        <label for="filterByRating">MPAA Rating</label>
+                        
+                        <label for="filterByRatingG" class="pl-5">G</label>
+                        <input id="filterByRatingG" type="radio" value="G" v-model="filterByRating" name="filterByRating">
+                        <label for="filterByRatingPG" class="pl-5">PG</label>
+                        <input id="filterByRatingPG" type="radio" value="PG" v-model="filterByRating" name="filterByRating">
+                        <label for="filterByRatingPG13" class="pl-5">PG_13</label>
+                        <input id="filterByRatingPG13" type="radio" value="PG_13" v-model="filterByRating" name="filterByRating">
+                        <label for="filterByRatingNC17" class="pl-5">NC_17</label>
+                        <input id="filterByRatingNC17" type="radio" value="NC_17" v-model="filterByRating" name="filterByRating">
+                    </div>
+                    <div>
+                        <label for="filterByScreenWriter">Screen writer</label>
+                        <input id="filterByScreenWriter" type="text" maxlength="10" v-model="filterByScreenWriter">
+                    </div>
+                    
                     <button class="btn btn-info" v-on:click="filter()" type="submit">Filter</button>
                 </div>
             `,
@@ -101,12 +195,43 @@ Vue.component(
                 elementsCount: '',
                 pageNumber: '',
                 orderBy: '',
-                orderDirection: ''
+                orderDirection: '',
+                filterById: '',
+                filterByName: '',
+                filterByCoordinates: '',
+                filterByCreationDate: '',
+                filterByCreationDateAction: '',
+                filterByOscarCount: '',
+                filterByOscarCountAction: '',
+                filterByGoldenPalmCount: '',
+                filterByGoldenPalmCountActionAction: '',
+                filterByTotalBoxOffice: '',
+                filterByTotalBoxOfficeAction: '',
+                filterByRating: '',
+                filterByScreenWriter: ''
             }
         },
         methods: {
             filter: function () {
-                this.$emit('filter', {'elementsCount': this.elementsCount, 'pageNumber': this.pageNumber, 'orderBy': this.orderBy, 'orderDirection': this.orderDirection});
+                this.$emit('filter', {
+                    'elementsCount': this.elementsCount,
+                    'pageNumber': this.pageNumber,
+                    'orderBy': this.orderBy,
+                    'orderDirection': this.orderDirection,
+                    'filterById': this.filterById,
+                    'filterByName': this.filterByName,
+                    'filterByCoordinates': this.filterByCoordinates,
+                    'filterByCreationDate': this.filterByCreationDate,
+                    'filterByCreationDateAction': this.filterByCreationDateAction,
+                    'filterByOscarCount': this.filterByOscarCount,
+                    'filterByOscarCountAction': this.filterByOscarCountAction,
+                    'filterByGoldenPalmCount': this.filterByGoldenPalmCount,
+                    'filterByGoldenPalmCountAction': this.filterByGoldenPalmCountAction,
+                    'filterByTotalBoxOffice': this.filterByTotalBoxOffice,
+                    'filterByTotalBoxOfficeAction': this.filterByTotalBoxOfficeAction,
+                    'filterByRating': this.filterByRating,
+                    'filterByScreenWriter': this.filterByScreenWriter
+                });
             }
         }
     }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,13 @@ public class LessTotalBoxOfficeController extends HttpServlet {
 
         FilterConfiguration filterConfiguration = new FilterConfiguration();
         filterConfiguration.setFilter(new String[]{"totalBoxOffice,<," + lessThan});
-        List<MovieDTO> movies = movieService.findAll(filterConfiguration);
+        List<MovieDTO> movies = null;
+        try {
+            movies = movieService.findAll(filterConfiguration);
+        } catch (ParseException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+        }
 
         if (movies != null) {
             writer.write(gson.toJson(movies));

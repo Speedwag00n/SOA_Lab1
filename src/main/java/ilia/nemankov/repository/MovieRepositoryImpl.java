@@ -1,6 +1,7 @@
 package ilia.nemankov.repository;
 
 import ilia.nemankov.controller.FilterConfiguration;
+import ilia.nemankov.entity.MPAARating;
 import ilia.nemankov.entity.Movie;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,9 +12,11 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.internal.OrderImpl;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Queue;
 
@@ -44,7 +47,7 @@ public class MovieRepositoryImpl implements MovieRepository {
     }
 
     @Override
-    public List<Movie> findAll(FilterConfiguration filterConfiguration) {
+    public List<Movie> findAll(FilterConfiguration filterConfiguration) throws ParseException {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -56,45 +59,84 @@ public class MovieRepositoryImpl implements MovieRepository {
             Root<Movie> root = criteria.from(Movie.class);
 
             if (filterConfiguration.getOrder() != null) {
+                List<Order> orders = new ArrayList<>();
+
                 for (String order : filterConfiguration.getOrder()) {
                     String[] parts = order.split(",");
                     if (parts.length == 2) {
                         if (parts[1].equals("d")) {
-                            criteria.orderBy(criteriaBuilder.desc(root.get(parts[0])));
+                            orders.add(criteriaBuilder.desc(root.get(parts[0])));
                         } else if (parts[1].equals("a")) {
-                            criteria.orderBy(criteriaBuilder.asc(root.get(parts[0])));
+                            orders.add(criteriaBuilder.asc(root.get(parts[0])));
                         }
                     }
                 }
+
+                criteria.orderBy(orders);
             }
 
             if (filterConfiguration.getFilter() != null) {
+                List<Predicate> predicates = new ArrayList<>();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
                 for (String filter : filterConfiguration.getFilter()) {
+                    System.out.println(filter);
                     String[] parts = filter.split(",");
 
                     if (parts.length == 3) {
+                        System.out.println(parts[0]);
+                        System.out.println(parts[1]);
+                        System.out.println(parts[2]);
+                        System.out.println();
+
                         switch (parts[1]) {
                             case "==":
-                                criteria.where(criteriaBuilder.equal(root.get(parts[0]), parts[2]));
+                                if (parts[0].equals("creationDate")) {
+                                    predicates.add(criteriaBuilder.equal(root.<Date>get(parts[0]), formatter.parse(parts[2])));
+                                } else if (parts[0].equals("coordinates") || parts[0].equals("screenWriter")) {
+                                    predicates.add(criteriaBuilder.equal(root.get(parts[0]).get("id"), parts[2]));
+                                } else if (parts[0].equals("mpaaRating")) {
+                                    predicates.add(criteriaBuilder.equal(root.get(parts[0]), MPAARating.valueOf(parts[2])));
+                                } else {
+                                    predicates.add(criteriaBuilder.equal(root.get(parts[0]), parts[2]));
+                                }
                                 break;
                             case "<=":
-                                criteria.where(criteriaBuilder.lessThanOrEqualTo(root.get(parts[0]), parts[2]));
+                                if (parts[0].equals("creationDate")) {
+                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(parts[0]), formatter.parse(parts[2])));
+                                } else {
+                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(parts[0]), parts[2]));
+                                }
                                 break;
                             case ">=":
-                                criteria.where(criteriaBuilder.greaterThanOrEqualTo(root.get(parts[0]), parts[2]));
+                                if (parts[0].equals("creationDate")) {
+                                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(parts[0]), formatter.parse(parts[2])));
+                                } else {
+                                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(parts[0]), parts[2]));
+                                }
                                 break;
                             case "<":
-                                criteria.where(criteriaBuilder.lessThan(root.get(parts[0]), parts[2]));
+                                if (parts[0].equals("creationDate")) {
+                                    predicates.add(criteriaBuilder.lessThan(root.get(parts[0]), formatter.parse(parts[2])));
+                                } else {
+                                    predicates.add(criteriaBuilder.lessThan(root.get(parts[0]), parts[2]));
+                                }
                                 break;
                             case ">":
-                                criteria.where(criteriaBuilder.greaterThan(root.get(parts[0]), parts[2]));
+                                if (parts[0].equals("creationDate")) {
+                                    predicates.add(criteriaBuilder.greaterThan(root.get(parts[0]), formatter.parse(parts[2])));
+                                } else {
+                                    predicates.add(criteriaBuilder.greaterThan(root.get(parts[0]), parts[2]));
+                                }
                                 break;
                             case "contains":
-                                criteria.where(criteriaBuilder.like(root.get(parts[0]), "%" + parts[2] + "%"));
+                                predicates.add(criteriaBuilder.like(root.get(parts[0]), "%" + parts[2] + "%"));
                                 break;
                         }
                     }
                 }
+
+                criteria.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
             }
 
             Query<Movie> query = session.createQuery(criteria);

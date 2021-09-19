@@ -17,7 +17,7 @@
 <body>
 <div id="app" class="pl-5 pr-5">
     <filters v-on:filter="filter"></filters>
-    <result-table v-bind:movies="movies" v-on:filter="filter"></result-table>
+    <result-table v-bind:movies="movies" v-on:filter="filter" v-on:deletemovie="deleteMovie"></result-table>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
@@ -48,6 +48,34 @@
 
                 if (filterInfo.orderBy !== 'none') {
                     params.push('order=' + filterInfo.orderBy + ',' + filterInfo.orderDirection)
+                }
+
+                if (filterInfo.filterById) {
+                    params.push('filter=id,==,' + filterInfo.filterById)
+                }
+                if (filterInfo.filterByName) {
+                    params.push('filter=name,contains,' + filterInfo.filterByName)
+                }
+                if (filterInfo.filterByCoordinates) {
+                    params.push('filter=coordinates,==,' + filterInfo.filterByCoordinates)
+                }
+                if (filterInfo.filterByCreationDate && filterInfo.filterByCreationDateAction) {
+                    params.push('filter=creationDate,' + filterInfo.filterByCreationDateAction + ',' + filterInfo.filterByCreationDate)
+                }
+                if (filterInfo.filterByOscarCount && filterInfo.filterByOscarCountAction) {
+                    params.push('filter=oscarsCount,' + filterInfo.filterByOscarCountAction + ',' + filterInfo.filterByOscarCount)
+                }
+                if (filterInfo.filterByGoldenPalmCount && filterInfo.filterByGoldenPalmCountAction) {
+                    params.push('filter=goldenPalmCount,' + filterInfo.filterByGoldenPalmCountAction + ',' + filterInfo.filterByGoldenPalmCount)
+                }
+                if (filterInfo.filterByTotalBoxOffice && filterInfo.filterByTotalBoxOfficeAction) {
+                    params.push('filter=totalBoxOffice,' + filterInfo.filterByTotalBoxOfficeAction + ',' + filterInfo.filterByTotalBoxOffice)
+                }
+                if (filterInfo.filterByRating) {
+                    params.push('filter=mpaaRating,==,' + filterInfo.filterByRating)
+                }
+                if (filterInfo.filterByScreenWriter) {
+                    params.push('filter=screenWriter,==,' + filterInfo.filterByScreenWriter)
                 }
 
                 params = params.join('&')

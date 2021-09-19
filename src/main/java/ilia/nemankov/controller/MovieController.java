@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.List;
 
 @WebServlet("/api/movie")
@@ -55,7 +56,13 @@ public class MovieController extends HttpServlet {
                 filterConfiguration.setFilter(req.getParameterValues("filter"));
             }
 
-            List<MovieDTO> movies = movieService.findAll(filterConfiguration);
+            List<MovieDTO> movies = null;
+            try {
+                movies = movieService.findAll(filterConfiguration);
+            } catch (ParseException e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                e.printStackTrace();
+            }
 
             if (movies != null) {
                 writer.write(gson.toJson(movies));

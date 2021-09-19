@@ -6,6 +6,7 @@ import ilia.nemankov.entity.Movie;
 import ilia.nemankov.mapper.MovieMapper;
 import ilia.nemankov.repository.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> findAll(FilterConfiguration filterConfiguration) {
+    public List<MovieDTO> findAll(FilterConfiguration filterConfiguration) throws ParseException {
         List<Movie> movies =  movieRepository.findAll(filterConfiguration);
 
         List<MovieDTO> result = new ArrayList<>();

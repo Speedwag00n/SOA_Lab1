@@ -3,12 +3,13 @@ package ilia.nemankov.repository;
 import ilia.nemankov.controller.FilterConfiguration;
 import ilia.nemankov.entity.Movie;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface MovieRepository {
     List<Movie> findAll();
 
-    List<Movie> findAll(FilterConfiguration filterConfiguration);
+    List<Movie> findAll(FilterConfiguration filterConfiguration) throws ParseException;
 
     void save(Movie coordinates);
 
