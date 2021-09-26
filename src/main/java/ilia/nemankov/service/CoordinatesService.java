@@ -8,4 +8,10 @@ public interface CoordinatesService {
 
     List<CoordinatesDTO> findAll();
 
+    CoordinatesDTO save(CoordinatesDTO dto);
+
+    CoordinatesDTO findById(Long id);
+
+    void delete(Long id);
+
 }

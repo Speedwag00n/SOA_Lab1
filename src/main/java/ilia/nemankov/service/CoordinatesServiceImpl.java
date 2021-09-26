@@ -31,4 +31,28 @@ public class CoordinatesServiceImpl implements CoordinatesService {
 
         return result;
     }
+
+    @Override
+    public CoordinatesDTO save(CoordinatesDTO dto) {
+        Coordinates coordinates = coordinatesMapper.dtoToEntity(dto);
+
+        coordinatesRepository.save(coordinates);
+        return coordinatesMapper.entityToDto(coordinates);
+    }
+
+    @Override
+    public CoordinatesDTO findById(Long id) {
+        Coordinates coordinates = coordinatesRepository.findById(id);
+
+        if (coordinates != null) {
+            return coordinatesMapper.entityToDto(coordinates);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        coordinatesRepository.delete(id);
+    }
 }

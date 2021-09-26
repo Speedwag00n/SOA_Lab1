@@ -33,12 +33,61 @@ public class CoordinatesController extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         Gson gson = gsonBuilder.create();
 
-        List<CoordinatesDTO> coordinates = coordinatesService.findAll();
+        Long id = (Long) req.getAttribute("id");
 
-        if (coordinates != null) {
-            writer.write(gson.toJson(coordinates));
+        if (id == null) {
+            List<CoordinatesDTO> coordinates = null;
+
+            coordinates = coordinatesService.findAll();
+
+            if (coordinates != null) {
+                writer.write(gson.toJson(coordinates));
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
         } else {
-            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            CoordinatesDTO coordinate = coordinatesService.findById(id);
+
+            if (coordinate != null) {
+                writer.write(gson.toJson(coordinate));
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+
+        PrintWriter writer = resp.getWriter();
+        Gson gson = gsonBuilder.create();
+
+        CoordinatesDTO coordinate = (CoordinatesDTO) req.getAttribute("coordinates");
+
+        try {
+            CoordinatesDTO savedValue = coordinatesService.save(coordinate);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            writer.write(gson.toJson(savedValue));
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            writer.write(gson.toJson(e.getMessage()));
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+
+        PrintWriter writer = resp.getWriter();
+        Gson gson = gsonBuilder.create();
+
+        Long id = (Long) req.getAttribute("id");
+        try {
+            coordinatesService.delete(id);
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            writer.write(gson.toJson(e.getMessage()));
         }
     }
 }

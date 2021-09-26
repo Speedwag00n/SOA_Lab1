@@ -31,4 +31,28 @@ public class PersonServiceImpl implements PersonService {
 
         return result;
     }
+
+    @Override
+    public PersonDTO save(PersonDTO dto) {
+        Person person = personMapper.dtoToEntity(dto);
+
+        personRepository.save(person);
+        return personMapper.entityToDto(person);
+    }
+
+    @Override
+    public PersonDTO findById(Long id) {
+        Person person = personRepository.findById(id);
+
+        if (person != null) {
+            return personMapper.entityToDto(person);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        personRepository.delete(id);
+    }
 }

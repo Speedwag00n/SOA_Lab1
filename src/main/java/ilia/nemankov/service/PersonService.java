@@ -8,4 +8,10 @@ public interface PersonService {
 
     List<PersonDTO> findAll();
 
+    PersonDTO save(PersonDTO dto);
+
+    PersonDTO findById(Long id);
+
+    void delete(Long id);
+
 }
