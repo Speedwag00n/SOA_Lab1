@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
 
 
-@WebFilter("/api/coordinates")
+@WebFilter("/api/coordinates/*")
 public class CoordinatesFilter implements Filter {
     private final GsonBuilder gsonBuilder = new GsonBuilder();
     private Gson gson;
@@ -35,7 +35,7 @@ public class CoordinatesFilter implements Filter {
 
         try {
 
-            if (req.getMethod().equalsIgnoreCase("delete") && !req.getParameterMap().containsKey("id")) {
+            if (req.getMethod().equalsIgnoreCase("delete") && req.getPathInfo() == null) {
                 resp.setContentType("application/json");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().write(gson.toJson("Id must be specified"));
@@ -55,8 +55,8 @@ public class CoordinatesFilter implements Filter {
             }
 
             if (req.getMethod().equalsIgnoreCase("get") || req.getMethod().equalsIgnoreCase("delete")) {
-                if (req.getParameter("id") != null) {
-                    Long id = Long.valueOf(req.getParameter("id"));
+                if (req.getPathInfo() != null) {
+                    Long id = Long.valueOf(req.getPathInfo().replace("/", ""));
                     req.setAttribute("id", id);
                 }
             }

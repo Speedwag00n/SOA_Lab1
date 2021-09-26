@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/api/coordinates")
+@WebServlet("/api/coordinates/*")
 public class CoordinatesController extends HttpServlet {
 
     private final GsonBuilder gsonBuilder;

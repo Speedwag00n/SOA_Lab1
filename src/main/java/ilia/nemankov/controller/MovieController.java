@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
 
-@WebServlet("/api/movie")
+@WebServlet("/api/movie/*")
 public class MovieController extends HttpServlet {
 
     private final GsonBuilder gsonBuilder;
