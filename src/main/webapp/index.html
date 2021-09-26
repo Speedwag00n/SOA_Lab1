@@ -26,6 +26,7 @@
 <script src="https://unpkg.com/vue-resource"></script>
 <script src="js/basic-components.js"></script>
 <script src="js/main-components.js"></script>
+<script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 
 <script>
     var app = new Vue({
@@ -95,7 +96,7 @@
             },
             deleteMovie: function (movie) {
                 this.$http.delete(
-                    'http://localhost:8080/SOA_Lab1_war/api/movie?id=' + movie.id
+                    'http://localhost:8080/SOA_Lab1_war/api/movie/id=' + movie.id
                 ).then(
                     (response) => {
                         this.movies.splice(this.movies.indexOf(movie), 1);
@@ -113,6 +114,12 @@
                         movie
                     ).then(
                         (response) => {
+                            for (let i in this.movies) {
+                                if (movie.id === this.movies[i].id) {
+                                    this.movies.splice(i, 1);
+                                    break
+                                }
+                            }
                             this.movies.push(response.body);
                         },
                         (error) => {

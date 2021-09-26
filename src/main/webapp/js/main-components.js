@@ -5,7 +5,7 @@ Vue.component(
             `
                 <div>
                     <h1 class="col-xs-1 text-center">Movies</h1>
-                    <table class="table table-striped table-bordered table-hover p-5 text-center" v-bind:class="{empty: isEmpty}">
+                    <table class="table table-striped table-bordered table-hover p-5 text-center">
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
@@ -22,7 +22,7 @@ Vue.component(
                             <td>{{ movie.id }}</td>
                             <td>{{ movie.name }}</td>
                             <td>Id: {{ movie.coordinates.id }} (X: {{ movie.coordinates.x }}. Y: {{ movie.coordinates.y }})</td>
-                            <td>{{ movie.creationDate }}</td>
+                            <td>{{ formatCreationDate(movie) }}</td>
                             <td>{{ movie.oscarsCount }}</td>
                             <td>{{ movie.goldenPalmCount }}</td>
                             <td>{{ movie.totalBoxOffice }}</td>
@@ -39,17 +39,15 @@ Vue.component(
             `,
 
         props: ["movies"],
-        computed: {
-            isEmpty: function () {
-                return this.movies.length == 0;
-            }
-        },
         methods: {
             editMovie: function (movie) {
                 this.$emit('editmovie', movie);
             },
             deleteMovie: function (movie) {
                 this.$emit('deletemovie', movie);
+            },
+            formatCreationDate: function (movie) {
+                return moment(movie.creationDate, 'lll').format('YYYY-MM-DD');
             }
         }
     }
@@ -263,9 +261,7 @@ Vue.component(
                 </div>
                 <div>
                     <label for="coordinates">Coordinates</label>
-                    <select v-model="coordinates">
-                        <option v-for="coord in coordinateslist" v-bind:value="coord.id" name="coordinates">Id: {{coord.id}} (X: {{coord.x}}. Y: {{coord.y}})</option>
-                    </select>
+                    <input id="coordinates" type="text" maxlength="10" v-model="coordinates">
                 </div>
                 <div>
                     <label for="creationDate">Creation date</label>
@@ -297,10 +293,7 @@ Vue.component(
                 </div>
                 <div>
                     <label for="screenWriter">Screen writer</label>
-                    <select v-model="screenWriter">
-                        <option v-for="person in personslist" v-bind:value="person.id" name="screenWriter" >Id: {{person.id}} ({{person.name}})</option>
-                        <option name="screenWriter" v-bind:value="0">None</option>
-                    </select>
+                    <input id="screenWriter" type="text" maxlength="10" v-model="screenWriter">
                 </div>
                 
                 <button v-if="id" class="btn btn-info" v-on:click="addMovie()" type="submit">Update</button>
@@ -342,13 +335,13 @@ Vue.component(
             updateFields: function(movie) {
                 this.id = movie.id
                 this.name = movie.name
-                this.coordinates = movie.coordinates
-                this.creationDate = movie.creationDate
+                this.coordinates = movie.coordinates.id
+                this.creationDate = moment(movie.creationDate, 'lll').format('YYYY-MM-DD')
                 this.oscarsCount = movie.oscarsCount
                 this.goldenPalmCount = movie.goldenPalmCount
                 this.totalBoxOffice = movie.totalBoxOffice
                 this.mpaaRating = movie.mpaaRating
-                this.screenWriter = movie.screenWriter
+                this.screenWriter = movie.screenWriter.id
             }
         }
     }
