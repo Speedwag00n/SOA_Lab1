@@ -321,10 +321,16 @@ Vue.component(
                     'coordinates': this.coordinates,
                     'creationDate': this.creationDate,
                     'oscarsCount': this.oscarsCount,
-                    'goldenPalmCount': this.goldenPalmCount,
-                    'totalBoxOffice': this.totalBoxOffice,
-                    'mpaaRating': this.mpaaRating,
-                    'screenWriter': this.screenWriter
+                    'goldenPalmCount': this.goldenPalmCount
+                }
+                if (this.totalBoxOffice) {
+                    movie.totalBoxOffice = this.totalBoxOffice
+                }
+                if (this.mpaaRating) {
+                    movie.mpaaRating = this.mpaaRating
+                }
+                if (this.screenWriter) {
+                    movie.screenWriter = this.screenWriter
                 }
                 if (this.id) {
                     movie.id = this.id

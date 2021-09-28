@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.service.MovieService;
 import ilia.nemankov.service.MovieServiceImpl;
+import ilia.nemankov.utils.MissingEntityException;
+import ilia.nemankov.utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -67,7 +69,7 @@ public class MovieController extends HttpServlet {
             if (movies != null) {
                 writer.write(gson.toJson(movies));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             MovieDTO movie = movieService.findById(id);
@@ -75,45 +77,42 @@ public class MovieController extends HttpServlet {
             if (movie != null) {
                 writer.write(gson.toJson(movie));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
-        MovieDTO movie = (MovieDTO) req.getAttribute("movie");
-
         try {
-            MovieDTO savedValue = movieService.save(movie);
+            resp.setContentType("application/json");
+
+            PrintWriter writer = resp.getWriter();
+            Gson gson = gsonBuilder.create();
+
+            MovieDTO movie = (MovieDTO) req.getAttribute("movie");
+
+            MovieDTO savedValue = movieService.saveOrUpdate(movie);
             resp.setStatus(HttpServletResponse.SC_CREATED);
             writer.write(gson.toJson(savedValue));
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
+        } catch (MissingEntityException e) {
+            Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, e.getError());
         }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
-        MovieDTO movie = (MovieDTO) req.getAttribute("movie");
-
         try {
-            writer.write(gson.toJson(movieService.update(movie)));
+            resp.setContentType("application/json");
 
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
+            PrintWriter writer = resp.getWriter();
+            Gson gson = gsonBuilder.create();
+
+            MovieDTO movie = (MovieDTO) req.getAttribute("movie");
+
+            writer.write(gson.toJson(movieService.saveOrUpdate(movie)));
+        } catch (MissingEntityException e) {
+            Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, e.getError());
         }
     }
 
@@ -121,15 +120,7 @@ public class MovieController extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
         Long id = (Long) req.getAttribute("id");
-        try {
-            movieService.delete(id);
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
-        }
+        movieService.delete(id);
     }
 }

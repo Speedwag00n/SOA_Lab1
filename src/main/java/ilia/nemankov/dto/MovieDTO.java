@@ -14,7 +14,7 @@ public class MovieDTO {
     private CoordinatesDTO coordinates;
     private Date creationDate;
     private Integer oscarsCount;
-    private Long goldenPalmCount;
+    private long goldenPalmCount;
     private Double totalBoxOffice;
     private MPAARating mpaaRating;
     private PersonDTO screenWriter;

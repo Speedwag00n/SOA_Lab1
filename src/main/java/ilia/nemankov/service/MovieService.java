@@ -10,11 +10,9 @@ public interface MovieService {
 
     List<MovieDTO> findAll(FilterConfiguration filterConfiguration) throws ParseException;
 
-    MovieDTO save(MovieDTO dto);
+    MovieDTO saveOrUpdate(MovieDTO dto);
 
     MovieDTO findById(Long id);
-
-    MovieDTO update(MovieDTO newValue);
 
     void delete(Long id);
 

@@ -2,9 +2,13 @@ package ilia.nemankov.service;
 
 import ilia.nemankov.controller.FilterConfiguration;
 import ilia.nemankov.dto.MovieDTO;
+import ilia.nemankov.entity.Coordinates;
 import ilia.nemankov.entity.Movie;
+import ilia.nemankov.filters.MovieFilter;
 import ilia.nemankov.mapper.MovieMapper;
 import ilia.nemankov.repository.*;
+import ilia.nemankov.utils.Error;
+import ilia.nemankov.utils.MissingEntityException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -39,15 +43,26 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDTO save(MovieDTO dto) {
+    public MovieDTO saveOrUpdate(MovieDTO dto) {
         Movie movie = movieMapper.dtoToEntity(dto);
         movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
+        if (movie.getCoordinates() == null) {
+            throw new MissingEntityException(new Error(MovieFilter.MISSING_COORDINATES_ENTITY, "Could not found specified coordinates"));
+        }
         if (movie.getScreenWriter() != null) {
             movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
+            if (movie.getScreenWriter() == null) {
+                throw new MissingEntityException(new Error(MovieFilter.MISSING_SCREEN_WRITER_ENTITY, "Could not found specified screen writer"));
+            }
         }
 
-        movieRepository.save(movie);
-        return movieMapper.entityToDto(movie);
+        if (movie.getId() == null || movieRepository.findById(movie.getId()) == null) {
+            movieRepository.save(movie);
+            return movieMapper.entityToDto(movie);
+        } else {
+            Movie updatedValue = movieRepository.update(movie);
+            return movieMapper.entityToDto(updatedValue);
+        }
     }
 
     @Override
@@ -59,19 +74,6 @@ public class MovieServiceImpl implements MovieService {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public MovieDTO update(MovieDTO newValue) {
-        Movie movie = movieMapper.dtoToEntity(newValue);
-        movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
-        if (movie.getScreenWriter() != null) {
-            movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
-        }
-
-        MovieDTO updatedValue;
-        updatedValue = movieMapper.entityToDto(movieRepository.update(movie));
-        return updatedValue;
     }
 
     @Override

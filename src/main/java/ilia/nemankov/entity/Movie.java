@@ -33,7 +33,7 @@ public class Movie {
     private Integer oscarsCount;
 
     @Column(name = "GOLDEN_PALM_COUNT")
-    private Long goldenPalmCount;
+    private long goldenPalmCount;
 
     @Column(name = "TOTAL_BOX_OFFICE")
     private Double totalBoxOffice;
