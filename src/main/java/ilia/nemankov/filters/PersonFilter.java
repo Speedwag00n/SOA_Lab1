@@ -1,9 +1,6 @@
 package ilia.nemankov.filters;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.entity.Country;
 import ilia.nemankov.entity.MPAARating;
@@ -20,7 +17,9 @@ import java.util.stream.Collectors;
 
 @WebFilter("/api/person/*")
 public class PersonFilter implements Filter {
-    JsonParser jsonParser;
+    private JsonParser jsonParser;
+
+    public static final int INVALID_JSON = 1;
 
     public static final int MISSING_ID = 100;
     public static final int WRONG_ID_FORMAT = 101;
@@ -58,7 +57,15 @@ public class PersonFilter implements Filter {
         if (req.getMethod().equalsIgnoreCase("post")) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-            JsonObject json = (JsonObject)jsonParser.parse(servletRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+            JsonObject json;
+
+            try {
+                json = (JsonObject)jsonParser.parse(servletRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+            } catch (JsonSyntaxException e) {
+                Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_JSON, "Invalid JSON in request body");
+                return;
+            }
+
             PersonDTO dto = new PersonDTO();
 
             if (json.get("name") == null) {
