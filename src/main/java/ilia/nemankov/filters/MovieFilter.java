@@ -1,6 +1,8 @@
 package ilia.nemankov.filters;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import ilia.nemankov.dto.CoordinatesDTO;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.dto.PersonDTO;

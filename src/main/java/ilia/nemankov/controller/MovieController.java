@@ -40,14 +40,9 @@ public class MovieController extends HttpServlet {
 
         if (id == null) {
             FilterConfiguration filterConfiguration = new FilterConfiguration();
-            if (req.getParameter("count") != null) {
-                filterConfiguration.setCount(Integer.valueOf(req.getParameter("count")));
-
-                if (req.getParameter("page") != null) {
-                    filterConfiguration.setPage(Integer.valueOf(req.getParameter("page")));
-                } else {
-                    filterConfiguration.setPage(1);
-                }
+            if (req.getAttribute("count") != null && req.getAttribute("page") != null) {
+                filterConfiguration.setCount((int)req.getAttribute("count"));
+                filterConfiguration.setPage((int)req.getAttribute("page"));
             }
 
             if (req.getParameter("order") != null) {

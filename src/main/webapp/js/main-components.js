@@ -363,7 +363,7 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByCreationDate">Creation date</label>
-                        <input id="filterByCreationDate" type="text" maxlength="8" v-model="filterByCreationDate">
+                        <input id="filterByCreationDate" type="text" maxlength="10" v-model="filterByCreationDate">
                         
                         <label for="filterByCreationDateActionLess" class="pl-5"><</label>
                         <input id="filterByCreationDateActionLess" type="radio" value="<" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
