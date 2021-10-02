@@ -18,78 +18,31 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
     @Override
     public List<Coordinates> findAll() {
         Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        List<Coordinates> result;
-
-        try {
-            result = session.createQuery("FROM COORDINATES").list();
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
-
-        return result;
+        return session.createQuery("FROM COORDINATES").list();
     }
 
     @Override
     public void save(Coordinates coordinates) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        try {
-            session.save(coordinates);
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        session.save(coordinates);
     }
 
     @Override
     public Coordinates findById(Long id) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        Coordinates result = null;
-
-        try {
-            result = session.get(Coordinates.class, id);
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-        }
-
-        return result;
+        return session.get(Coordinates.class, id);
     }
 
     @Override
     public Coordinates update(Coordinates newValue) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        try {
-            session.update(newValue);
-            transaction.commit();
-            return newValue;
-        } catch (Exception e) {
-            transaction.rollback();
-            return null;
-        }
+        session.update(newValue);
+        return newValue;
     }
 
     @Override
     public void delete(Long id) {
         Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        try {
-            session.createQuery("delete from ilia.nemankov.entity.Coordinates where id=:id").setParameter("id", id).executeUpdate();
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        session.createQuery("delete from ilia.nemankov.entity.Coordinates where id=:id").setParameter("id", id).executeUpdate();
     }
 }
