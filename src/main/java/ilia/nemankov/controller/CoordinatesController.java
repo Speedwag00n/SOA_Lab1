@@ -43,7 +43,7 @@ public class CoordinatesController extends HttpServlet {
             if (coordinates != null) {
                 writer.write(gson.toJson(coordinates));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             CoordinatesDTO coordinate = coordinatesService.findById(id);
@@ -51,7 +51,7 @@ public class CoordinatesController extends HttpServlet {
             if (coordinate != null) {
                 writer.write(gson.toJson(coordinate));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }
