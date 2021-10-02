@@ -90,7 +90,7 @@ Vue.component(
                         <label for="orderByScreenWriter" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter" type="radio" value="screenWriter" v-model="orderBy">
                         <label for="orderByNone" class="pl-3">None</label>
-                        <input id="orderByNone" type="radio" value="none" v-model="orderBy" checked>
+                        <input id="orderByNone" type="radio" value="" v-model="orderBy" checked>
                     </div>
                     
                     <h3>Order direction</h3>

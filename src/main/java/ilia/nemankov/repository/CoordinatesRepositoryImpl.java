@@ -4,9 +4,7 @@ import ilia.nemankov.entity.Coordinates;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinatesRepositoryImpl implements CoordinatesRepository {
@@ -14,7 +12,7 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
     private final SessionFactory sessionFactory;
 
     public CoordinatesRepositoryImpl() {
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory = SessionFactoryBuilder.getSessionFactory();
     }
 
     @Override

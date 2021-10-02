@@ -3,14 +3,10 @@ package ilia.nemankov.repository;
 import ilia.nemankov.controller.FilterConfiguration;
 import ilia.nemankov.entity.MPAARating;
 import ilia.nemankov.entity.Movie;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.internal.OrderImpl;
 
 import javax.persistence.criteria.*;
 import java.text.ParseException;
@@ -18,14 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Queue;
 
 public class MovieRepositoryImpl implements MovieRepository {
 
     private final SessionFactory sessionFactory;
 
     public MovieRepositoryImpl() {
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory = SessionFactoryBuilder.getSessionFactory();
     }
 
     @Override

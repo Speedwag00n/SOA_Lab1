@@ -48,7 +48,7 @@
                     }
                 }
 
-                if (filterInfo.orderBy !== 'none' && filterInfo.orderDirection) {
+                if (filterInfo.orderBy && filterInfo.orderDirection) {
                     params.push('order=' + filterInfo.orderBy + ',' + filterInfo.orderDirection)
                 }
 

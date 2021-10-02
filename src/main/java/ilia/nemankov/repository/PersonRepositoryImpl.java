@@ -4,7 +4,6 @@ import ilia.nemankov.entity.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     private final SessionFactory sessionFactory;
 
     public PersonRepositoryImpl() {
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+        this.sessionFactory = SessionFactoryBuilder.getSessionFactory();
     }
 
     @Override
