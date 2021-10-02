@@ -629,3 +629,24 @@ Vue.component(
         }
     }
 );
+
+Vue.component(
+    'additional-actions',
+    {
+        template:
+            `
+            <div>
+                <h1 class="col-xs-1 text-center">Avrg golden palm count</h1>
+                <div>{{ goldenpalmcountavrg }}</div>
+                <button class="btn btn-info" v-on:click="updateAvrg()" type="submit">Update avrg goldenPalmCount</button>
+            </div>
+            `,
+
+        props: ["goldenpalmcountavrg"],
+        methods: {
+            updateAvrg: function () {
+                this.$emit('calcavrg');
+            }
+        }
+    }
+);

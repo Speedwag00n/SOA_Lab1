@@ -20,6 +20,7 @@
     <result-table v-bind:movies="movies" v-on:deletemovie="deleteMovie" v-on:editmovie="editMovie"></result-table>
     <add-movie v-on:addmovie="addMovie" v-bind:personsList="personsList"
                v-bind:coordinatesList="coordinatesList" ref="mainform"></add-movie>
+    <additional-actions v-on:calcavrg="calcAvrg" v-bind:goldenpalmcountavrg="goldenpalmcountavrg"></additional-actions>
 </div>
 
 <script src="https://unpkg.com/vue"></script>
@@ -34,7 +35,8 @@
         data: {
             movies: [],
             coordinatesList: [],
-            personsList: []
+            personsList: [],
+            goldenpalmcountavrg: "-"
         },
         methods: {
             filter: function(filterInfo) {
@@ -172,6 +174,19 @@
             editMovie: function (movie) {
                 this.$refs.mainform.$el.scrollIntoView({ behavior: 'smooth' });
                 this.$refs.mainform.updateFields(movie);
+            },
+            calcAvrg: function () {
+                this.$http.get(
+                    'http://localhost:8080/SOA_Lab1_war/api/avrg',
+                ).then(
+                    (response) => {
+                        this.goldenpalmcountavrg = response.body
+                    },
+                    (error) => {
+                        if (error.status == 403 || error.status == 0) {
+                        }
+                    }
+                );
             }
         },
         created: function() {

@@ -151,6 +151,13 @@ public class MovieRepositoryImpl implements MovieRepository {
     @Override
     public void delete(Long id) {
         Session session = sessionFactory.openSession();
-        session.createQuery("delete from ilia.nemankov.entity.Movie where id=:id").setParameter("id", id).executeUpdate();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.createQuery("delete from ilia.nemankov.entity.Movie where id=:id").setParameter("id", id).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 }

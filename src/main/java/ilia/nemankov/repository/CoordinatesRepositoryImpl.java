@@ -43,6 +43,13 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
     @Override
     public void delete(Long id) {
         Session session = sessionFactory.openSession();
-        session.createQuery("delete from ilia.nemankov.entity.Coordinates where id=:id").setParameter("id", id).executeUpdate();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.createQuery("delete from ilia.nemankov.entity.Coordinates where id=:id").setParameter("id", id).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 }
