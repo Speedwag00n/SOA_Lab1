@@ -65,29 +65,16 @@ public class CoordinatesController extends HttpServlet {
 
         CoordinatesDTO coordinate = (CoordinatesDTO) req.getAttribute("coordinates");
 
-        try {
-            CoordinatesDTO savedValue = coordinatesService.save(coordinate);
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            writer.write(gson.toJson(savedValue));
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
-        }
+        CoordinatesDTO savedValue = coordinatesService.save(coordinate);
+        resp.setStatus(HttpServletResponse.SC_CREATED);
+        writer.write(gson.toJson(savedValue));
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
         Long id = (Long) req.getAttribute("id");
-        try {
-            coordinatesService.delete(id);
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
-        }
+        coordinatesService.delete(id);
     }
 }

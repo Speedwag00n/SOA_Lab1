@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.service.PersonService;
 import ilia.nemankov.service.PersonServiceImpl;
+import ilia.nemankov.utils.InvalidValueException;
+import ilia.nemankov.utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +45,7 @@ public class PersonController extends HttpServlet {
             if (persons != null) {
                 writer.write(gson.toJson(persons));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             PersonDTO person = personService.findById(id);
@@ -51,7 +53,7 @@ public class PersonController extends HttpServlet {
             if (person != null) {
                 writer.write(gson.toJson(person));
             } else {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }
@@ -65,13 +67,13 @@ public class PersonController extends HttpServlet {
 
         PersonDTO person = (PersonDTO) req.getAttribute("person");
 
+        PersonDTO savedValue = null;
         try {
-            PersonDTO savedValue = personService.save(person);
+            savedValue = personService.save(person);
             resp.setStatus(HttpServletResponse.SC_CREATED);
             writer.write(gson.toJson(savedValue));
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
+        } catch (InvalidValueException e) {
+            Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, e.getError());
         }
     }
 
@@ -79,15 +81,7 @@ public class PersonController extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
         Long id = (Long) req.getAttribute("id");
-        try {
-            personService.delete(id);
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            writer.write(gson.toJson(e.getMessage()));
-        }
+        personService.delete(id);
     }
 }

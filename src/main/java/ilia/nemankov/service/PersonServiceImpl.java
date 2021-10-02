@@ -5,6 +5,7 @@ import ilia.nemankov.entity.Person;
 import ilia.nemankov.mapper.PersonMapper;
 import ilia.nemankov.repository.PersonRepository;
 import ilia.nemankov.repository.PersonRepositoryImpl;
+import ilia.nemankov.utils.InvalidValueException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO save(PersonDTO dto) {
+    public PersonDTO save(PersonDTO dto) throws InvalidValueException {
         Person person = personMapper.dtoToEntity(dto);
 
         personRepository.save(person);

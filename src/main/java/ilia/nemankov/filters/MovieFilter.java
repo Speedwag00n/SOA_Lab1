@@ -29,6 +29,7 @@ public class MovieFilter implements Filter {
     public static final int WRONG_ID_FORMAT = 101;
 
     public static final int MISSING_NAME = 110;
+    public static final int INVALID_NAME_VALUE = 111;
 
     public static final int MISSING_COORDINATES = 120;
     public static final int WRONG_COORDINATES_FORMAT = 121;
@@ -122,6 +123,12 @@ public class MovieFilter implements Filter {
             }
 
             dto.setName(json.get("name").getAsString());
+
+            if (!(dto.getName().length() > 0)) {
+                Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_NAME_VALUE, "Length of field 'name' must be bigger than 0");
+                return;
+            }
+
             CoordinatesDTO coordinatesDTO = new CoordinatesDTO();
             dto.setCoordinates(coordinatesDTO);
 

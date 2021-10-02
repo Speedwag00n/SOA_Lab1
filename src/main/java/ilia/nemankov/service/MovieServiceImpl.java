@@ -43,7 +43,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDTO saveOrUpdate(MovieDTO dto) {
+    public MovieDTO saveOrUpdate(MovieDTO dto) throws MissingEntityException {
         Movie movie = movieMapper.dtoToEntity(dto);
         movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
         if (movie.getCoordinates() == null) {

@@ -5,26 +5,26 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MissingEntityException extends Exception {
+public class InvalidValueException extends Exception {
 
     private Error error;
 
-    public MissingEntityException(Error error) {
+    public InvalidValueException(Error error) {
         super();
         this.error = error;
     }
 
-    public MissingEntityException(Error error, String message, Throwable cause) {
+    public InvalidValueException(Error error, String message, Throwable cause) {
         super(message, cause);
         this.error = error;
     }
 
-    public MissingEntityException(Error error, String message) {
+    public InvalidValueException(Error error, String message) {
         super(message);
         this.error = error;
     }
 
-    public MissingEntityException(Error error, Throwable cause) {
+    public InvalidValueException(Error error, Throwable cause) {
         super(cause);
         this.error = error;
     }
