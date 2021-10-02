@@ -64,9 +64,9 @@ Vue.component(
                     <h3>Pagination</h3>
                     <div>
                         <label for="elementsCount">Elements count:</label>
-                        <input id="elementsCount" type="text" maxlength="10" v-model="elementsCount">
+                        <input id="elementsCount" type="text" maxlength="8" v-model="elementsCount">
                         <label for="pageNumber" class="ml-5">Page number</label>
-                        <input id="pageNumber" type="text" maxlength="10" v-model="pageNumber">
+                        <input id="pageNumber" type="text" maxlength="8" v-model="pageNumber">
                     </div>
                     
                     <h3>Order by</h3>
@@ -106,7 +106,7 @@ Vue.component(
                     <h3>Filter</h3>
                     <div>
                         <label for="filterById">Id</label>
-                        <input id="filterById" type="text" maxlength="10" v-model="filterById">
+                        <input id="filterById" type="text" maxlength="8" v-model="filterById">
                     </div>
                     <div>
                         <label for="filterByName">Name</label>
@@ -114,11 +114,11 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByCoordinates">Coordinates</label>
-                        <input id="filterByCoordinates" type="text" maxlength="10" v-model="filterByCoordinates">
+                        <input id="filterByCoordinates" type="text" maxlength="8" v-model="filterByCoordinates">
                     </div>
                     <div>
                         <label for="filterByCreationDate">Creation date</label>
-                        <input id="filterByCreationDate" type="text" maxlength="10" v-model="filterByCreationDate">
+                        <input id="filterByCreationDate" type="text" maxlength="8" v-model="filterByCreationDate">
                         
                         <label for="filterByCreationDateActionLess" class="pl-5"><</label>
                         <input id="filterByCreationDateActionLess" type="radio" value="<" v-model="filterByCreationDateAction" name="filterByCreationDateAction">
@@ -133,7 +133,7 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByOscarCount">Oscars count</label>
-                        <input id="filterByOscarCount" type="text" maxlength="10" v-model="filterByOscarCount">
+                        <input id="filterByOscarCount" type="text" maxlength="8" v-model="filterByOscarCount">
                         
                         <label for="filterByOscarCountActionLess" class="pl-5"><</label>
                         <input id="filterByOscarCountActionLess" type="radio" value="<" v-model="filterByOscarCountAction" name="filterByOscarCountAction">
@@ -148,7 +148,7 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByGoldenPalmCount">Golden palm count</label>
-                        <input id="filterByGoldenPalmCount" type="text" maxlength="10" v-model="filterByGoldenPalmCount">
+                        <input id="filterByGoldenPalmCount" type="text" maxlength="8" v-model="filterByGoldenPalmCount">
                         
                         <label for="filterByGoldenPalmCountActionLess" class="pl-5"><</label>
                         <input id="filterByGoldenPalmCountActionLess" type="radio" value="<" v-model="filterByGoldenPalmCountAction" name="filterByGoldenPalmCountAction">
@@ -163,7 +163,7 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByTotalBoxOffice">Total box office</label>
-                        <input id="filterByTotalBoxOffice" type="text" maxlength="10" v-model="filterByTotalBoxOffice">
+                        <input id="filterByTotalBoxOffice" type="text" maxlength="12" v-model="filterByTotalBoxOffice">
                         
                         <label for="filterByTotalBoxOfficeActionLess" class="pl-5"><</label>
                         <input id="filterByTotalBoxOfficeActionLess" type="radio" value="<" v-model="filterByTotalBoxOfficeAction" name="filterByTotalBoxOfficeAction">
@@ -190,7 +190,7 @@ Vue.component(
                     </div>
                     <div>
                         <label for="filterByScreenWriter">Screen writer</label>
-                        <input id="filterByScreenWriter" type="text" maxlength="10" v-model="filterByScreenWriter">
+                        <input id="filterByScreenWriter" type="text" maxlength="8" v-model="filterByScreenWriter">
                     </div>
                     
                     <button class="btn btn-info" v-on:click="filter()" type="submit">Filter</button>
@@ -253,7 +253,7 @@ Vue.component(
                 <h1 class="col-xs-1 text-center">Add/update movie</h1>
                 <div>
                     <label for="id">Id</label>
-                    <input id="id" type="text" maxlength="10" v-model="id">
+                    <input id="id" type="text" maxlength="8" v-model="id">
                 </div>
                 <div>
                     <label for="name">Name</label>
@@ -261,7 +261,7 @@ Vue.component(
                 </div>
                 <div>
                     <label for="coordinates">Coordinates</label>
-                    <input id="coordinates" type="text" maxlength="10" v-model="coordinates">
+                    <input id="coordinates" type="text" maxlength="8" v-model="coordinates">
                 </div>
                 <div>
                     <label for="creationDate">Creation date</label>
@@ -269,15 +269,15 @@ Vue.component(
                 </div>
                 <div>
                     <label for="oscarsCount">Oscars count</label>
-                    <input id="oscarsCount" type="text" maxlength="10" v-model="oscarsCount">
+                    <input id="oscarsCount" type="text" maxlength="8" v-model="oscarsCount">
                 </div>
                 <div>
                     <label for="goldenPalmCount">Golden palm count</label>
-                    <input id="goldenPalmCount" type="text" maxlength="10" v-model="goldenPalmCount">
+                    <input id="goldenPalmCount" type="text" maxlength="8" v-model="goldenPalmCount">
                 </div>
                 <div>
                     <label for="totalBoxOffice">Total box office</label>
-                    <input id="totalBoxOffice" type="text" maxlength="10" v-model="totalBoxOffice">
+                    <input id="totalBoxOffice" type="text" maxlength="12" v-model="totalBoxOffice">
                 </div>
                 <div>
                     <label for="mpaaRating">MPAA Rating</label>
@@ -293,7 +293,7 @@ Vue.component(
                 </div>
                 <div>
                     <label for="screenWriter">Screen writer</label>
-                    <input id="screenWriter" type="text" maxlength="10" v-model="screenWriter">
+                    <input id="screenWriter" type="text" maxlength="8" v-model="screenWriter">
                 </div>
                 
                 <button v-if="id" class="btn btn-info" v-on:click="addMovie()" type="submit">Update</button>

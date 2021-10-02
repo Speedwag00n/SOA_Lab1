@@ -161,7 +161,7 @@ public class MovieFilter implements Filter {
             try {
                 dto.setGoldenPalmCount(json.get("goldenPalmCount").getAsLong());
 
-                if (!(dto.getOscarsCount() > 0)) {
+                if (!(dto.getGoldenPalmCount() > 0)) {
                     Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_GOLDEN_PALM_COUNT_VALUE, "Field 'goldenPalmCount' must be bigger than 0");
                     return;
                 }
@@ -174,7 +174,7 @@ public class MovieFilter implements Filter {
                 try {
                     dto.setTotalBoxOffice(json.get("totalBoxOffice").getAsDouble());
 
-                    if (!(dto.getOscarsCount() > 0)) {
+                    if (!(dto.getTotalBoxOffice() > 0)) {
                         Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_TOTAL_BOX_OFFICE_VALUE, "Field 'totalBoxOffice' must be bigger than 0");
                         return;
                     }

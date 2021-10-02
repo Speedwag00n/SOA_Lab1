@@ -96,7 +96,7 @@
             },
             deleteMovie: function (movie) {
                 this.$http.delete(
-                    'http://localhost:8080/SOA_Lab1_war/api/movie/id=' + movie.id
+                    'http://localhost:8080/SOA_Lab1_war/api/movie/' + movie.id
                 ).then(
                     (response) => {
                         this.movies.splice(this.movies.indexOf(movie), 1);
