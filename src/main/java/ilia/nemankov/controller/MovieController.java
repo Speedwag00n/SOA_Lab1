@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
 
-@WebServlet("/api/movie/*")
+@WebServlet("/api/movies/*")
 public class MovieController extends HttpServlet {
 
     private final GsonBuilder gsonBuilder;
@@ -38,11 +38,14 @@ public class MovieController extends HttpServlet {
 
         Long id = (Long) req.getAttribute("id");
 
-        if (id == null) {
+        if (req.getPathInfo() != null && req.getPathInfo().equals("/avrg")) {
+            resp.setContentType("application/json");
+            writer.write(gson.toJson(movieService.getAvrgGoldenPalmCount()));
+        } else if (id == null) {
             FilterConfiguration filterConfiguration = new FilterConfiguration();
             if (req.getAttribute("count") != null && req.getAttribute("page") != null) {
-                filterConfiguration.setCount((int)req.getAttribute("count"));
-                filterConfiguration.setPage((int)req.getAttribute("page"));
+                filterConfiguration.setCount((int) req.getAttribute("count"));
+                filterConfiguration.setPage((int) req.getAttribute("page"));
                 System.out.println(filterConfiguration.getCount());
                 System.out.println(filterConfiguration.getPage());
             }

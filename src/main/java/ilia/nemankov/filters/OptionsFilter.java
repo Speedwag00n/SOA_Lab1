@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-@WebFilter("/api/movie/*")
+@WebFilter("/api/movies/*")
 public class OptionsFilter implements Filter {
     private JsonParser jsonParser;
 

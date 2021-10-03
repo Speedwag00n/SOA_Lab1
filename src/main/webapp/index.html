@@ -112,7 +112,7 @@
                 params = params.join('&')
 
                 this.$http.get(
-                    '/api/movie?' + params
+                    '/api/movies?' + params
                 ).then(
                     (response) => {
                         this.movies = response.body;
@@ -125,7 +125,7 @@
             },
             deleteMovie: function (movie) {
                 this.$http.delete(
-                    '/api/movie/' + movie.id
+                    '/api/movies/' + movie.id
                 ).then(
                     (response) => {
                         this.movies.splice(this.movies.indexOf(movie), 1);
@@ -139,7 +139,7 @@
             addMovie: function (movie) {
                 if (movie.id) {
                     this.$http.put(
-                        '/api/movie',
+                        '/api/movies',
                         movie
                     ).then(
                         (response) => {
@@ -158,7 +158,7 @@
                     );
                 } else {
                     this.$http.post(
-                        '/api/movie',
+                        '/api/movies',
                         movie
                     ).then(
                         (response) => {
@@ -177,7 +177,7 @@
             },
             calcAvrg: function () {
                 this.$http.get(
-                    '/api/avrg',
+                    '/api/movies/avrg',
                 ).then(
                     (response) => {
                         this.goldenpalmcountavrg = response.body
@@ -191,7 +191,7 @@
         },
         created: function() {
             this.$http.get(
-                '/api/movie',
+                '/api/movies',
                 {
                 }
             ).then(
@@ -219,7 +219,7 @@
             );
 
             this.$http.get(
-                '/api/person',
+                '/api/persons',
                 {
                 }
             ).then(

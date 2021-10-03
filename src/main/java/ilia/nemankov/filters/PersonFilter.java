@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
 
 
-@WebFilter("/api/person/*")
+@WebFilter("/api/persons/*")
 public class PersonFilter implements Filter {
     private JsonParser jsonParser;
 

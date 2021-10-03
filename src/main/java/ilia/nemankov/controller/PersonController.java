@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/api/person/*")
+@WebServlet("/api/persons/*")
 public class PersonController extends HttpServlet {
 
     private final GsonBuilder gsonBuilder;

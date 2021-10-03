@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 
-@WebFilter("/api/movie/*")
+@WebFilter("/api/movies/*")
 public class MovieFilter implements Filter {
     private JsonParser jsonParser;
 
@@ -213,8 +213,11 @@ public class MovieFilter implements Filter {
         if (req.getMethod().equalsIgnoreCase("get") || req.getMethod().equalsIgnoreCase("delete")) {
             if (req.getPathInfo() != null) {
                 try {
-                    Long id = Long.valueOf(req.getPathInfo().replaceAll("^/", ""));
-                    req.setAttribute("id", id);
+                    String rawPathInfo = req.getPathInfo().replaceAll("^/", "");
+                    if (!rawPathInfo.equals("avrg")) {
+                        Long id = Long.valueOf(rawPathInfo);
+                        req.setAttribute("id", id);
+                    }
                 } catch (NumberFormatException e) {
                     Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, WRONG_ID_FORMAT, "Field 'id' must be integer");
                     return;
