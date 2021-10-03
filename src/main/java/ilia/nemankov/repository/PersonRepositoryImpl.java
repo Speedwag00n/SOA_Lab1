@@ -35,7 +35,14 @@ public class PersonRepositoryImpl implements PersonRepository {
             throw new InvalidValueException(new Error(PersonFilter.PASSPORT_ID_IN_USE, "Passport id in use"));
         }
 
-        session.save(person);
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.save(person);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 
     @Override

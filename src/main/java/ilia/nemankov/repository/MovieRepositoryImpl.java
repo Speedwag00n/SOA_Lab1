@@ -132,7 +132,15 @@ public class MovieRepositoryImpl implements MovieRepository {
     @Override
     public void save(Movie movie) {
         Session session = sessionFactory.openSession();
-        session.save(movie);
+
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.save(movie);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 
     @Override
@@ -144,8 +152,17 @@ public class MovieRepositoryImpl implements MovieRepository {
     @Override
     public Movie update(Movie newValue) {
         Session session = sessionFactory.openSession();
-        session.update(newValue);
-        return newValue;
+
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.update(newValue);
+            transaction.commit();
+            return newValue;
+        } catch (Exception e) {
+            transaction.rollback();
+            return null;
+        }
     }
 
     @Override

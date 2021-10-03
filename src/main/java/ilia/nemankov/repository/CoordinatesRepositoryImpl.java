@@ -24,7 +24,15 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
     @Override
     public void save(Coordinates coordinates) {
         Session session = sessionFactory.openSession();
-        session.save(coordinates);
+
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            session.save(coordinates);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 
     @Override

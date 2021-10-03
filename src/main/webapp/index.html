@@ -112,7 +112,7 @@
                 params = params.join('&')
 
                 this.$http.get(
-                    'http://localhost:8080/SOA_Lab1_war/api/movie?' + params
+                    '/api/movie?' + params
                 ).then(
                     (response) => {
                         this.movies = response.body;
@@ -125,7 +125,7 @@
             },
             deleteMovie: function (movie) {
                 this.$http.delete(
-                    'http://localhost:8080/SOA_Lab1_war/api/movie/' + movie.id
+                    '/api/movie/' + movie.id
                 ).then(
                     (response) => {
                         this.movies.splice(this.movies.indexOf(movie), 1);
@@ -139,7 +139,7 @@
             addMovie: function (movie) {
                 if (movie.id) {
                     this.$http.put(
-                        'http://localhost:8080/SOA_Lab1_war/api/movie',
+                        '/api/movie',
                         movie
                     ).then(
                         (response) => {
@@ -158,7 +158,7 @@
                     );
                 } else {
                     this.$http.post(
-                        'http://localhost:8080/SOA_Lab1_war/api/movie',
+                        '/api/movie',
                         movie
                     ).then(
                         (response) => {
@@ -177,7 +177,7 @@
             },
             calcAvrg: function () {
                 this.$http.get(
-                    'http://localhost:8080/SOA_Lab1_war/api/avrg',
+                    '/api/avrg',
                 ).then(
                     (response) => {
                         this.goldenpalmcountavrg = response.body
@@ -191,7 +191,7 @@
         },
         created: function() {
             this.$http.get(
-                'http://localhost:8080/SOA_Lab1_war/api/movie',
+                '/api/movie',
                 {
                 }
             ).then(
@@ -205,7 +205,7 @@
             );
 
             this.$http.get(
-                'http://localhost:8080/SOA_Lab1_war/api/coordinates',
+                '/api/coordinates',
                 {
                 }
             ).then(
@@ -219,7 +219,7 @@
             );
 
             this.$http.get(
-                'http://localhost:8080/SOA_Lab1_war/api/person',
+                '/api/person',
                 {
                 }
             ).then(

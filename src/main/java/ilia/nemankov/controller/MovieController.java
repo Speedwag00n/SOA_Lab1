@@ -43,6 +43,8 @@ public class MovieController extends HttpServlet {
             if (req.getAttribute("count") != null && req.getAttribute("page") != null) {
                 filterConfiguration.setCount((int)req.getAttribute("count"));
                 filterConfiguration.setPage((int)req.getAttribute("page"));
+                System.out.println(filterConfiguration.getCount());
+                System.out.println(filterConfiguration.getPage());
             }
 
             if (req.getParameter("order") != null) {

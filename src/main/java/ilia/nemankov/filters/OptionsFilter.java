@@ -42,6 +42,12 @@ public class OptionsFilter implements Filter {
 
     public static final int WRONG_SCREEN_WRITER_FILTER_FORMAT = 580;
 
+    public static final int WRONG_COUNT_FORMAT = 590;
+    public static final int INVALID_COUNT_VALUE = 591;
+
+    public static final int WRONG_PAGE_FORMAT = 590;
+    public static final int INVALID_PAGE_VALUE = 591;
+
     private static final List<String> EXPECTED_FIELDS = Collections.unmodifiableList(Arrays.asList("id", "name", "coordinates", "creationDate", "oscarsCount", "goldenPalmCount", "totalBoxOffice", "mpaaRating", "screenWriter"));
     private static final List<String> EXPECTED_ACTIONS = Collections.unmodifiableList(Arrays.asList("<", ">", "==", "<=", ">=", "contains"));
 
@@ -58,10 +64,36 @@ public class OptionsFilter implements Filter {
 
         if (req.getMethod().equalsIgnoreCase("get")) {
             if (req.getParameter("count") != null) {
-                req.setAttribute("count", req.getParameter("count"));
+                int count, page;
 
-                if (req.getAttribute("page") != null) {
-                    req.setAttribute("page", req.getParameter("page"));
+                try {
+                    count = Integer.valueOf(req.getParameter("count"));
+
+                    if (!(count > 0)) {
+                        Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_COUNT_VALUE, "Parameter 'count' must be bigger than 0");
+                        return;
+                    }
+
+                    req.setAttribute("count", count);
+                } catch (NumberFormatException e) {
+                    Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, WRONG_COUNT_FORMAT, "Parameter 'count' must be integer");
+                    return;
+                }
+
+                if (req.getParameter("page") != null) {
+                    try {
+                        page = Integer.valueOf(req.getParameter("page"));
+
+                        if (!(page > 0)) {
+                            Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_PAGE_VALUE, "Parameter 'page' must be bigger than 0");
+                            return;
+                        }
+
+                        req.setAttribute("page", page);
+                    } catch (NumberFormatException e) {
+                        Utils.writeError(resp, HttpServletResponse.SC_BAD_REQUEST, WRONG_PAGE_FORMAT, "Parameter 'page' must be integer");
+                        return;
+                    }
                 } else {
                     req.setAttribute("page", 1);
                 }
