@@ -214,7 +214,7 @@ public class MovieFilter implements Filter {
             if (req.getPathInfo() != null) {
                 try {
                     String rawPathInfo = req.getPathInfo().replaceAll("^/", "");
-                    if (!rawPathInfo.equals("avrg")) {
+                    if (!rawPathInfo.equals("golden_palm_count/avrg")) {
                         Long id = Long.valueOf(rawPathInfo);
                         req.setAttribute("id", id);
                     }

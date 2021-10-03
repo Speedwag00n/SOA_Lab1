@@ -38,7 +38,7 @@ public class MovieController extends HttpServlet {
 
         Long id = (Long) req.getAttribute("id");
 
-        if (req.getPathInfo() != null && req.getPathInfo().equals("/avrg")) {
+        if (req.getPathInfo() != null && req.getPathInfo().equals("/golden_palm_count/avrg")) {
             resp.setContentType("application/json");
             writer.write(gson.toJson(movieService.getAvrgGoldenPalmCount()));
         } else if (id == null) {
