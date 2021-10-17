@@ -46,4 +46,7 @@ public class Movie {
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "SCREEN_WRITER")
     private Person screenWriter;
+
+    @Column(name = "GENRE")
+    private String genre;
 }

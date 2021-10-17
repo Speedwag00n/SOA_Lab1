@@ -16,7 +16,7 @@ import java.util.*;
 
 public class MovieServiceImpl implements MovieService {
 
-    private static final List<String> EXPECTED_FIELDS = Collections.unmodifiableList(Arrays.asList("id", "name", "coordinates", "creationDate", "oscarsCount", "goldenPalmCount", "totalBoxOffice", "mpaaRating", "screenWriter"));
+    private static final List<String> EXPECTED_FIELDS = Collections.unmodifiableList(Arrays.asList("id", "name", "coordinates", "creationDate", "oscarsCount", "goldenPalmCount", "totalBoxOffice", "mpaaRating", "screenWriter", "genre"));
     private static final List<String> EXPECTED_ACTIONS = Collections.unmodifiableList(Arrays.asList("<", ">", "==", "<=", ">=", "contains"));
 
     private final MovieRepository movieRepository;
@@ -125,6 +125,10 @@ public class MovieServiceImpl implements MovieService {
             throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'goldenPalmCount' must be specified").build());
         }
 
+        if (dto.getGenre() == null) {
+            throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'genre' must be specified").build());
+        }
+
         if (!(dto.getName().length() > 0)) {
             throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Length of field 'name' must be bigger than 0").build());
         }
@@ -139,6 +143,10 @@ public class MovieServiceImpl implements MovieService {
 
         if (dto.getTotalBoxOffice() != null && !(dto.getTotalBoxOffice() > 0)) {
             throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'totalBoxOffice' must be bigger than 0").build());
+        }
+
+        if (!(dto.getGenre().length() < 32) || !(dto.getGenre().length() > 0)) {
+            throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Length of field 'genre' must be bigger than 0 and less than 32").build());
         }
     }
 

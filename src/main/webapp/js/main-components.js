@@ -16,6 +16,7 @@ Vue.component(
                             <th>Total box office</th>
                             <th>MPAA rating</th>
                             <th>Screen writer</th>
+                            <th>Genre</th>
                             <th>Actions</th>
                         </tr>
                         <tr v-for="movie in movies">
@@ -29,6 +30,7 @@ Vue.component(
                             <td>{{ movie.mpaaRating }}</td>
                             <td v-if="movie.screenWriter">Id: {{ movie.screenWriter.id }} ({{ movie.screenWriter.name }})</td>
                             <td v-else>None</td>
+                            <td>{{ movie.genre }}</td>
                             <td>
                                 <button class="btn btn-success" v-on:click="editMovie(movie)" type="submit">Edit</button>
                                 <button class="btn btn-danger" v-on:click="deleteMovie(movie)" type="submit">Delete</button>
@@ -89,6 +91,8 @@ Vue.component(
                         <input id="orderByMPAARating1" type="radio" value="mpaaRating" v-model="orderBy1">
                         <label for="orderByScreenWriter1" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter1" type="radio" value="screenWriter" v-model="orderBy1">
+                        <label for="orderByGenre1" class="pl-3">Genre</label>
+                        <input id="orderByGenre1" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone1" class="pl-3">None</label>
                         <input id="orderByNone1" type="radio" value="" v-model="orderBy1" checked>
                         
@@ -120,6 +124,8 @@ Vue.component(
                         <input id="orderByMPAARating2" type="radio" value="mpaaRating" v-model="orderBy2">
                         <label for="orderByScreenWriter2" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter2" type="radio" value="screenWriter" v-model="orderBy2">
+                        <label for="orderByGenre2" class="pl-3">Genre</label>
+                        <input id="orderByGenre2" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone2" class="pl-3">None</label>
                         <input id="orderByNone2" type="radio" value="" v-model="orderBy2" checked>
                         
@@ -151,6 +157,8 @@ Vue.component(
                         <input id="orderByMPAARating3" type="radio" value="mpaaRating" v-model="orderBy3">
                         <label for="orderByScreenWriter3" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter3" type="radio" value="screenWriter" v-model="orderBy3">
+                        <label for="orderByGenre3" class="pl-3">Genre</label>
+                        <input id="orderByGenre3" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone3" class="pl-3">None</label>
                         <input id="orderByNone3" type="radio" value="" v-model="orderBy3" checked>
                         
@@ -182,6 +190,8 @@ Vue.component(
                         <input id="orderByMPAARating4" type="radio" value="mpaaRating" v-model="orderBy4">
                         <label for="orderByScreenWriter4" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter4" type="radio" value="screenWriter" v-model="orderBy4">
+                        <label for="orderByGenre4" class="pl-3">Genre</label>
+                        <input id="orderByGenre4" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone4" class="pl-3">None</label>
                         <input id="orderByNone4" type="radio" value="" v-model="orderBy4" checked>
                         
@@ -213,6 +223,8 @@ Vue.component(
                         <input id="orderByMPAARating5" type="radio" value="mpaaRating" v-model="orderBy5">
                         <label for="orderByScreenWriter5" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter5" type="radio" value="screenWriter" v-model="orderBy5">
+                        <label for="orderByGenre5" class="pl-3">Genre</label>
+                        <input id="orderByGenre5" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone5" class="pl-3">None</label>
                         <input id="orderByNone5" type="radio" value="" v-model="orderBy5" checked>
                         
@@ -244,6 +256,8 @@ Vue.component(
                         <input id="orderByMPAARating6" type="radio" value="mpaaRating" v-model="orderBy6">
                         <label for="orderByScreenWriter6" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter6" type="radio" value="screenWriter" v-model="orderBy6">
+                        <label for="orderByGenre6" class="pl-3">Genre</label>
+                        <input id="orderByGenre6" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone6" class="pl-3">None</label>
                         <input id="orderByNone6" type="radio" value="" v-model="orderBy6" checked>
                         
@@ -275,6 +289,8 @@ Vue.component(
                         <input id="orderByMPAARating7" type="radio" value="mpaaRating" v-model="orderBy7">
                         <label for="orderByScreenWriter7" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter7" type="radio" value="screenWriter" v-model="orderBy7">
+                        <label for="orderByGenre7" class="pl-3">Genre</label>
+                        <input id="orderByGenre7" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone7" class="pl-3">None</label>
                         <input id="orderByNone7" type="radio" value="" v-model="orderBy7" checked>
                         
@@ -306,6 +322,8 @@ Vue.component(
                         <input id="orderByMPAARating8" type="radio" value="mpaaRating" v-model="orderBy8">
                         <label for="orderByScreenWriter8" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter8" type="radio" value="screenWriter" v-model="orderBy8">
+                        <label for="orderByGenre8" class="pl-3">Genre</label>
+                        <input id="orderByGenre8" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone8" class="pl-3">None</label>
                         <input id="orderByNone8" type="radio" value="" v-model="orderBy8" checked>
                         
@@ -337,6 +355,8 @@ Vue.component(
                         <input id="orderByMPAARating9" type="radio" value="mpaaRating" v-model="orderBy9">
                         <label for="orderByScreenWriter9" class="pl-3">Screen writer</label>
                         <input id="orderByScreenWriter9" type="radio" value="screenWriter" v-model="orderBy9">
+                        <label for="orderByGenre9" class="pl-3">Genre</label>
+                        <input id="orderByGenre9" type="radio" value="genre" v-model="orderBy1">
                         <label for="orderByNone9" class="pl-3">None</label>
                         <input id="orderByNone9" type="radio" value="" v-model="orderBy9" checked>
                         
@@ -437,6 +457,10 @@ Vue.component(
                         <label for="filterByScreenWriter">Screen writer</label>
                         <input id="filterByScreenWriter" type="text" maxlength="8" v-model="filterByScreenWriter">
                     </div>
+                    <div>
+                        <label for="filterByGenre">Genre</label>
+                        <input id="filterByGenre" type="text" maxlength="32" v-model="filterByGenre">
+                    </div>
                     
                     <button class="btn btn-info" v-on:click="filter()" type="submit">Filter</button>
                 </div>
@@ -476,7 +500,8 @@ Vue.component(
                 filterByTotalBoxOffice: '',
                 filterByTotalBoxOfficeAction: '',
                 filterByRating: '',
-                filterByScreenWriter: ''
+                filterByScreenWriter: '',
+                filterByGenre: ''
             }
         },
         methods: {
@@ -514,7 +539,8 @@ Vue.component(
                     'filterByTotalBoxOffice': this.filterByTotalBoxOffice,
                     'filterByTotalBoxOfficeAction': this.filterByTotalBoxOfficeAction,
                     'filterByRating': this.filterByRating,
-                    'filterByScreenWriter': this.filterByScreenWriter
+                    'filterByScreenWriter': this.filterByScreenWriter,
+                    'filterByGenre': this.filterByGenre
                 });
             }
         }
@@ -572,6 +598,10 @@ Vue.component(
                     <label for="screenWriter">Screen writer</label>
                     <input id="screenWriter" type="text" maxlength="8" v-model="screenWriter">
                 </div>
+                <div>
+                    <label for="genre">Genre</label>
+                    <input id="genre" type="text" maxlength="256" v-model="genre">
+                </div>
                 
                 <button v-if="id" class="btn btn-info" v-on:click="addMovie()" type="submit">Update</button>
                 <button v-else class="btn btn-info" v-on:click="addMovie()" type="submit">Add</button>
@@ -588,7 +618,8 @@ Vue.component(
                 goldenPalmCount: '',
                 totalBoxOffice: '',
                 mpaaRating: '',
-                screenWriter: ''
+                screenWriter: '',
+                genre: ''
             }
         },
         methods: {
@@ -600,7 +631,8 @@ Vue.component(
                     },
                     'creationDate': moment(this.creationDate, 'YYYY-MM-DD').format('x') + '',
                     'oscarsCount': this.oscarsCount,
-                    'goldenPalmCount': this.goldenPalmCount
+                    'goldenPalmCount': this.goldenPalmCount,
+                    'genre': this.genre
                 }
                 if (this.totalBoxOffice) {
                     movie.totalBoxOffice = this.totalBoxOffice
@@ -629,6 +661,7 @@ Vue.component(
                 this.totalBoxOffice = movie.totalBoxOffice
                 this.mpaaRating = movie.mpaaRating
                 this.screenWriter = movie.screenWriter.id
+                this.genre = movie.genre
             }
         }
     }

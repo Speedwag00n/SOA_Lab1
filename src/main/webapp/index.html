@@ -108,6 +108,9 @@
                 if (filterInfo.filterByScreenWriter) {
                     params.push('filter=screenWriter,==,' + filterInfo.filterByScreenWriter)
                 }
+                if (filterInfo.filterByGenre) {
+                    params.push('filter=genre,contains,' + filterInfo.filterByGenre)
+                }
 
                 params = params.join('&')
 

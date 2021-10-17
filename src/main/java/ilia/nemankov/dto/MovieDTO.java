@@ -20,4 +20,5 @@ public class MovieDTO {
     private Double totalBoxOffice;
     private MPAARating mpaaRating;
     private PersonDTO screenWriter;
+    private String genre;
 }

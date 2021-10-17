@@ -23,6 +23,7 @@ public class MovieMapper {
         if (dto.getScreenWriter() != null) {
             movie.setScreenWriter(personMapper.dtoToEntity(dto.getScreenWriter()));
         }
+        movie.setGenre(dto.getGenre());
 
         return movie;
     }
@@ -41,6 +42,7 @@ public class MovieMapper {
         if (entity.getScreenWriter() != null) {
             movieDTO.setScreenWriter(personMapper.entityToDto(entity.getScreenWriter()));
         }
+        movieDTO.setGenre(entity.getGenre());
 
         return movieDTO;
     }
