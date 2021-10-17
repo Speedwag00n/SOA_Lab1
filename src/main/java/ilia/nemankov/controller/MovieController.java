@@ -83,7 +83,7 @@ public class MovieController extends HttpServlet {
         }
 
         MovieDTO savedValue = movieService.saveOrUpdate(movieDTO);
-        return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
+        return Response.status(HttpServletResponse.SC_OK).entity(savedValue).build();
     }
 
     @DELETE

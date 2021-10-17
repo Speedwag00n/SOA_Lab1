@@ -47,7 +47,7 @@ Vue.component(
                 this.$emit('deletemovie', movie);
             },
             formatCreationDate: function (movie) {
-                return moment(movie.creationDate).format('YYYY-MM-DD');
+                return moment(movie.creationDate, 'x').format('YYYY-MM-DD');
             }
         }
     }
@@ -595,8 +595,10 @@ Vue.component(
             addMovie: function () {
                 let movie = {
                     'name': this.name,
-                    'coordinates': this.coordinates,
-                    'creationDate': this.creationDate,
+                    'coordinates': {
+                        'id': this.coordinates
+                    },
+                    'creationDate': moment(this.creationDate, 'YYYY-MM-DD').format('x') + '',
                     'oscarsCount': this.oscarsCount,
                     'goldenPalmCount': this.goldenPalmCount
                 }
@@ -607,7 +609,9 @@ Vue.component(
                     movie.mpaaRating = this.mpaaRating
                 }
                 if (this.screenWriter) {
-                    movie.screenWriter = this.screenWriter
+                    movie.screenWriter = {
+                        'id': this.screenWriter
+                    }
                 }
                 if (this.id) {
                     movie.id = this.id
@@ -619,7 +623,7 @@ Vue.component(
                 this.id = movie.id
                 this.name = movie.name
                 this.coordinates = movie.coordinates.id
-                this.creationDate = moment(movie.creationDate).format('YYYY-MM-DD')
+                this.creationDate = moment(movie.creationDate, 'x').format('YYYY-MM-DD')
                 this.oscarsCount = movie.oscarsCount
                 this.goldenPalmCount = movie.goldenPalmCount
                 this.totalBoxOffice = movie.totalBoxOffice
