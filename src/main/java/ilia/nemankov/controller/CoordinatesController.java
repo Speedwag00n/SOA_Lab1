@@ -1,80 +1,61 @@
 package ilia.nemankov.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import ilia.nemankov.dto.CoordinatesDTO;
 import ilia.nemankov.service.CoordinatesService;
 import ilia.nemankov.service.CoordinatesServiceImpl;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
-@WebServlet("/api/coordinates/*")
+@Path("/coordinates")
+@Consumes({ "application/json" })
+@Produces({ "application/json" })
 public class CoordinatesController extends HttpServlet {
 
-    private final GsonBuilder gsonBuilder;
     private final CoordinatesService coordinatesService;
 
     public CoordinatesController() {
-        this.gsonBuilder = new GsonBuilder();
         this.coordinatesService = new CoordinatesServiceImpl();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+    @GET
+    @Path("/{id}")
+    public Response getCoordinates(@PathParam("id") Long id) {
+        CoordinatesDTO coordinate = coordinatesService.findById(id);
 
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
-        Long id = (Long) req.getAttribute("id");
-
-        if (id == null) {
-            List<CoordinatesDTO> coordinates = null;
-
-            coordinates = coordinatesService.findAll();
-
-            if (coordinates != null) {
-                writer.write(gson.toJson(coordinates));
-            } else {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
+        if (coordinate != null) {
+            return Response.status(HttpServletResponse.SC_OK).entity(coordinate).build();
         } else {
-            CoordinatesDTO coordinate = coordinatesService.findById(id);
-
-            if (coordinate != null) {
-                writer.write(gson.toJson(coordinate));
-            } else {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
+            return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+    @GET
+    @Path("")
+    public Response getCoordinates() {
+        List<CoordinatesDTO> coordinates = coordinatesService.findAll();
 
-        PrintWriter writer = resp.getWriter();
-        Gson gson = gsonBuilder.create();
-
-        CoordinatesDTO coordinate = (CoordinatesDTO) req.getAttribute("coordinates");
-
-        CoordinatesDTO savedValue = coordinatesService.save(coordinate);
-        resp.setStatus(HttpServletResponse.SC_CREATED);
-        writer.write(gson.toJson(savedValue));
+        if (coordinates.size() > 0) {
+            return Response.status(HttpServletResponse.SC_OK).entity(coordinates).build();
+        } else {
+            return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
+        }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+    @POST
+    @Path("")
+    public Response addCoordinates(CoordinatesDTO coordinate) {
+        CoordinatesDTO savedValue = coordinatesService.save(coordinate);
+        return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
+    }
 
-        Long id = (Long) req.getAttribute("id");
+    @DELETE
+    @Path("/{id}")
+    public Response deleteCoordinates(@PathParam("id") Long id) {
         coordinatesService.delete(id);
+        return Response.status(HttpServletResponse.SC_OK).build();
     }
 }

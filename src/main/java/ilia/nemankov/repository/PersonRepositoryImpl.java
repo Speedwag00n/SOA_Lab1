@@ -1,15 +1,14 @@
 package ilia.nemankov.repository;
 
 import ilia.nemankov.entity.Person;
-import ilia.nemankov.filters.MovieFilter;
-import ilia.nemankov.filters.PersonFilter;
-import ilia.nemankov.utils.Error;
-import ilia.nemankov.utils.InvalidValueException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class PersonRepositoryImpl implements PersonRepository {
@@ -27,12 +26,12 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public void save(Person person) throws InvalidValueException {
+    public void save(Person person) {
         Session session = sessionFactory.openSession();
         Query<Person> query = session.createQuery("from PERSON where passportId = :passportIdValue");
         query.setParameter("passportIdValue", person.getPassportId());
         if (query.list().size() > 0) {
-            throw new InvalidValueException(new Error(PersonFilter.PASSPORT_ID_IN_USE, "Passport id in use"));
+            throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Passport id in use").build());
         }
 
         Transaction transaction = session.beginTransaction();
