@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class PersonRepositoryImpl implements PersonRepository {
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 
@@ -64,10 +66,16 @@ public class PersonRepositoryImpl implements PersonRepository {
         Transaction transaction = session.beginTransaction();
 
         try {
+            Person person = session.get(Person.class, id);
+            if (person == null) {
+                throw new NotFoundException(Response.status(HttpServletResponse.SC_NOT_FOUND).entity("Specified object not found").build());
+            }
+
             session.createQuery("delete from ilia.nemankov.entity.Person where id=:id").setParameter("id", id).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 }

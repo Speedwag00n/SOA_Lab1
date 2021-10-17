@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PersonDTO {
+
+    public PersonDTO(Long id) {
+        this.id = id;
+    }
+
     private Long id;
     private String name;
     private Long height;

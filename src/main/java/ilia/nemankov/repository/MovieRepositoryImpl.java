@@ -9,6 +9,10 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.*;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Response;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -140,6 +144,7 @@ public class MovieRepositoryImpl implements MovieRepository {
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 
@@ -171,10 +176,16 @@ public class MovieRepositoryImpl implements MovieRepository {
         Transaction transaction = session.beginTransaction();
 
         try {
+            Movie movie = session.get(Movie.class, id);
+            if (movie == null) {
+                throw new NotFoundException(Response.status(HttpServletResponse.SC_NOT_FOUND).entity("Specified object not found").build());
+            }
+
             session.createQuery("delete from ilia.nemankov.entity.Movie where id=:id").setParameter("id", id).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 }

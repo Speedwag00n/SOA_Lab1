@@ -47,7 +47,7 @@ Vue.component(
                 this.$emit('deletemovie', movie);
             },
             formatCreationDate: function (movie) {
-                return moment(movie.creationDate, 'lll').format('YYYY-MM-DD');
+                return moment(movie.creationDate).format('YYYY-MM-DD');
             }
         }
     }
@@ -619,7 +619,7 @@ Vue.component(
                 this.id = movie.id
                 this.name = movie.name
                 this.coordinates = movie.coordinates.id
-                this.creationDate = moment(movie.creationDate, 'lll').format('YYYY-MM-DD')
+                this.creationDate = moment(movie.creationDate).format('YYYY-MM-DD')
                 this.oscarsCount = movie.oscarsCount
                 this.goldenPalmCount = movie.goldenPalmCount
                 this.totalBoxOffice = movie.totalBoxOffice

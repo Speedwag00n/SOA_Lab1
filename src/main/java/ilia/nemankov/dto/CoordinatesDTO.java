@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CoordinatesDTO {
+
+    public CoordinatesDTO(Long id) {
+        this.id = id;
+    }
+
     private Long id;
 
     private Double x;

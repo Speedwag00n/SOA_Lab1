@@ -5,6 +5,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class CoordinatesRepositoryImpl implements CoordinatesRepository {
@@ -32,6 +36,7 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 
@@ -54,10 +59,16 @@ public class CoordinatesRepositoryImpl implements CoordinatesRepository {
         Transaction transaction = session.beginTransaction();
 
         try {
+            Coordinates coordinates = session.get(Coordinates.class, id);
+            if (coordinates == null) {
+                throw new NotFoundException(Response.status(HttpServletResponse.SC_NOT_FOUND).entity("Specified object not found").build());
+            }
+
             session.createQuery("delete from ilia.nemankov.entity.Coordinates where id=:id").setParameter("id", id).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
+            throw e;
         }
     }
 }
