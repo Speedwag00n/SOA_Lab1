@@ -4,7 +4,6 @@ import ilia.nemankov.dto.CoordinatesDTO;
 import ilia.nemankov.service.CoordinatesService;
 import ilia.nemankov.service.CoordinatesServiceImpl;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -13,7 +12,7 @@ import java.util.List;
 @Path("/coordinates")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
-public class CoordinatesController extends HttpServlet {
+public class CoordinatesController {
 
     private final CoordinatesService coordinatesService;
 

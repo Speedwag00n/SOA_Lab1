@@ -4,7 +4,6 @@ import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.service.PersonService;
 import ilia.nemankov.service.PersonServiceImpl;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -13,7 +12,7 @@ import java.util.List;
 @Path("/persons")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
-public class PersonController extends HttpServlet {
+public class PersonController {
 
     private final PersonService personService;
 

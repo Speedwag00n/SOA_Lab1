@@ -4,7 +4,6 @@ import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.service.MovieService;
 import ilia.nemankov.service.MovieServiceImpl;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -14,7 +13,7 @@ import java.util.List;
 @Path("/movies")
 @Consumes({ "application/json" })
 @Produces({ "application/json" })
-public class MovieController extends HttpServlet {
+public class MovieController {
 
     private final MovieService movieService;
 
