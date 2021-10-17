@@ -123,6 +123,9 @@
                     (error) => {
                         if (error.status == 403 || error.status == 0) {
                         }
+                        if (error.status == 404) {
+                            this.movies = []
+                        }
                     }
                 );
             },
