@@ -133,8 +133,8 @@ public class MovieServiceImpl implements MovieService {
             throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Length of field 'name' must be bigger than 0").build());
         }
 
-        if (!(dto.getOscarsCount() > 0)) {
-            throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'oscarsCount' must be bigger than 0").build());
+        if (!(dto.getOscarsCount() >= 0)) {
+            throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'oscarsCount' must be bigger than or equal to 0").build());
         }
 
         if (!(dto.getGoldenPalmCount() > 0)) {
