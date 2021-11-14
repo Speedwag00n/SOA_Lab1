@@ -10,10 +10,10 @@ public interface PersonService {
 
     List<PersonDTO> findAll();
 
-    PersonDTO save(PersonDTO dto) throws BadResponseException;
+    PersonDTO save(PersonDTO dto) throws Exception;
 
     PersonDTO findById(Long id);
 
-    void delete(Long id) throws BadResponseException;
+    void delete(Long id) throws Exception;
 
 }

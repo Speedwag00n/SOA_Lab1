@@ -5,6 +5,7 @@ import ilia.nemankov.entity.Coordinates;
 import ilia.nemankov.mapper.CoordinatesMapper;
 import ilia.nemankov.repository.CoordinatesRepository;
 import ilia.nemankov.repository.CoordinatesRepositoryImpl;
+import ilia.nemankov.utils.Utils;
 
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
@@ -38,12 +39,16 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
-    public CoordinatesDTO save(CoordinatesDTO dto) throws BadResponseException {
-        validate(dto);
-        Coordinates coordinates = coordinatesMapper.dtoToEntity(dto);
+    public CoordinatesDTO save(CoordinatesDTO dto) throws Exception {
+        try {
+            validate(dto);
+            Coordinates coordinates = coordinatesMapper.dtoToEntity(dto);
 
-        coordinatesRepository.save(coordinates);
-        return coordinatesMapper.entityToDto(coordinates);
+            coordinatesRepository.save(coordinates);
+            return coordinatesMapper.entityToDto(coordinates);
+        } catch (BadResponseException e) {
+            throw Utils.serializeBadResponseException(e);
+        }
     }
 
     @Override
@@ -58,8 +63,12 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
-    public void delete(Long id) throws BadResponseException {
-        coordinatesRepository.delete(id);
+    public void delete(Long id) throws Exception {
+        try {
+            coordinatesRepository.delete(id);
+        } catch (BadResponseException e) {
+            throw Utils.serializeBadResponseException(e);
+        }
     }
 
     private void validate(CoordinatesDTO dto) throws BadResponseException {

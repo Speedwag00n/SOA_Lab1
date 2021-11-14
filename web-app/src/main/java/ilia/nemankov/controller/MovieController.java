@@ -3,6 +3,7 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.MovieService;
+import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -41,7 +42,7 @@ public class MovieController {
     @GET
     @Path("")
     public Response getMovies(@QueryParam("count") Integer count, @QueryParam("page") Integer page,
-                              @QueryParam("order") List<String> order, @QueryParam("filter") List<String> filter) throws ParseException {
+                              @QueryParam("order") List<String> order, @QueryParam("filter") List<String> filter) throws Exception {
         try {
             FilterConfiguration filterConfiguration = new FilterConfiguration();
             if (count != null && page != null) {
@@ -64,9 +65,9 @@ public class MovieController {
             } else {
                 return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
             }
-        } catch(
-        BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 
@@ -78,19 +79,20 @@ public class MovieController {
 
     @POST
     @Path("")
-    public Response addMovie(MovieDTO movieDTO) {
+    public Response addMovie(MovieDTO movieDTO) throws Exception {
         try {
             movieDTO.setId(null);
             MovieDTO savedValue = movieService.saveOrUpdate(movieDTO);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 
     @PUT
     @Path("")
-    public Response putMovie(MovieDTO movieDTO) {
+    public Response putMovie(MovieDTO movieDTO) throws Exception {
         try {
             if (movieDTO.getId() == null) {
                 throw new BadRequestException(Response.status(HttpServletResponse.SC_BAD_REQUEST).entity("Field 'id' must be specified").build());
@@ -98,19 +100,21 @@ public class MovieController {
 
             MovieDTO savedValue = movieService.saveOrUpdate(movieDTO);
             return Response.status(HttpServletResponse.SC_OK).entity(savedValue).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteMovie(@PathParam("id") Long id) {
+    public Response deleteMovie(@PathParam("id") Long id) throws Exception {
         try {
             movieService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 }

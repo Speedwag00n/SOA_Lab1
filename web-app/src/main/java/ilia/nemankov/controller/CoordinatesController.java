@@ -3,6 +3,7 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.CoordinatesDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.CoordinatesService;
+import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -51,23 +52,25 @@ public class CoordinatesController {
 
     @POST
     @Path("")
-    public Response addCoordinates(CoordinatesDTO coordinate) {
+    public Response addCoordinates(CoordinatesDTO coordinate) throws Exception {
         try {
             CoordinatesDTO savedValue = coordinatesService.save(coordinate);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteCoordinates(@PathParam("id") Long id) {
+    public Response deleteCoordinates(@PathParam("id") Long id) throws Exception {
         try {
             coordinatesService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 }

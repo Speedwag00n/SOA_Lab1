@@ -10,13 +10,13 @@ import java.util.List;
 @Remote
 public interface MovieService {
 
-    List<MovieDTO> findAll(FilterConfiguration filterConfiguration) throws ParseException, BadResponseException;
+    List<MovieDTO> findAll(FilterConfiguration filterConfiguration) throws Exception;
 
-    MovieDTO saveOrUpdate(MovieDTO dto) throws BadResponseException;
+    MovieDTO saveOrUpdate(MovieDTO dto) throws Exception;
 
     MovieDTO findById(Long id);
 
-    void delete(Long id) throws BadResponseException;
+    void delete(Long id) throws Exception;
 
     double getAvrgGoldenPalmCount();
 

@@ -3,6 +3,7 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.PersonService;
+import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -51,24 +52,25 @@ public class PersonController {
 
     @POST
     @Path("")
-    public Response addPerson(PersonDTO personDTO) {
+    public Response addPerson(PersonDTO personDTO) throws Exception {
         try {
             PersonDTO savedValue = personService.save(personDTO);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteCoordinates(@PathParam("id") Long id) {
+    public Response deleteCoordinates(@PathParam("id") Long id) throws Exception {
         try {
             personService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(
-        BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
+        } catch(Exception e) {
+            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
+            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
         }
     }
 }

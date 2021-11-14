@@ -5,6 +5,7 @@ import ilia.nemankov.entity.Person;
 import ilia.nemankov.mapper.PersonMapper;
 import ilia.nemankov.repository.PersonRepository;
 import ilia.nemankov.repository.PersonRepositoryImpl;
+import ilia.nemankov.utils.Utils;
 
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
@@ -36,12 +37,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO save(PersonDTO dto) throws BadResponseException {
-        validate(dto);
-        Person person = personMapper.dtoToEntity(dto);
+    public PersonDTO save(PersonDTO dto) throws Exception {
+        try {
+            validate(dto);
+            Person person = personMapper.dtoToEntity(dto);
 
-        personRepository.save(person);
-        return personMapper.entityToDto(person);
+            personRepository.save(person);
+            return personMapper.entityToDto(person);
+        } catch (BadResponseException e) {
+            throw Utils.serializeBadResponseException(e);
+        }
     }
 
     @Override
@@ -56,8 +61,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void delete(Long id) throws BadResponseException {
-        personRepository.delete(id);
+    public void delete(Long id) throws Exception {
+        try {
+            personRepository.delete(id);
+        } catch (BadResponseException e) {
+            throw Utils.serializeBadResponseException(e);
+        }
     }
 
     private void validate(PersonDTO dto) throws BadResponseException {
