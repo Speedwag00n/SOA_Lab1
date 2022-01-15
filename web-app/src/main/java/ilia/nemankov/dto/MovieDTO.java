@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class MovieDTO {
+public class MovieDTO implements Serializable {
     private Long id;
     private String name;
     private CoordinatesDTO coordinates;

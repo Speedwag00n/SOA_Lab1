@@ -4,9 +4,11 @@ import ilia.nemankov.entity.Country;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
-public class PersonDTO {
+public class PersonDTO implements Serializable {
 
     public PersonDTO(Long id) {
         this.id = id;

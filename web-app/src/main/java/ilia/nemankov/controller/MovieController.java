@@ -3,7 +3,6 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.MovieService;
-import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -11,7 +10,6 @@ import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.text.ParseException;
 import java.util.List;
 
 @Path("/movies")
@@ -23,7 +21,7 @@ public class MovieController {
 
     public MovieController() throws NamingException {
         Context context = new ContextProviderImpl().getContext();
-        Object ref = context.lookup("java:global/pool/MovieServiceImpl");
+        Object ref = context.lookup("pool/MovieServiceImpl!ilia.nemankov.service.MovieService");
         this.movieService = (MovieService) PortableRemoteObject.narrow(ref, MovieService.class);
     }
 
@@ -65,9 +63,8 @@ public class MovieController {
             } else {
                 return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
             }
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 
@@ -84,9 +81,8 @@ public class MovieController {
             movieDTO.setId(null);
             MovieDTO savedValue = movieService.saveOrUpdate(movieDTO);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 
@@ -100,9 +96,8 @@ public class MovieController {
 
             MovieDTO savedValue = movieService.saveOrUpdate(movieDTO);
             return Response.status(HttpServletResponse.SC_OK).entity(savedValue).build();
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 
@@ -112,9 +107,8 @@ public class MovieController {
         try {
             movieService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 }

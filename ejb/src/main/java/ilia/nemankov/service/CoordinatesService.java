@@ -10,10 +10,10 @@ public interface CoordinatesService {
 
     List<CoordinatesDTO> findAll();
 
-    CoordinatesDTO save(CoordinatesDTO dto) throws Exception;
+    CoordinatesDTO save(CoordinatesDTO dto) throws BadResponseException;
 
     CoordinatesDTO findById(Long id);
 
-    void delete(Long id) throws Exception;
+    void delete(Long id) throws BadResponseException;
 
 }

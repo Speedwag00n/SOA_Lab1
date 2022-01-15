@@ -3,7 +3,6 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.PersonService;
-import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -22,7 +21,7 @@ public class PersonController {
 
     public PersonController() throws NamingException {
         Context context = new ContextProviderImpl().getContext();
-        Object ref = context.lookup("java:global/pool/PersonServiceImpl");
+        Object ref = context.lookup("pool/PersonServiceImpl!ilia.nemankov.service.PersonService");
         this.personService = (PersonService) PortableRemoteObject.narrow(ref, PersonService.class);
     }
 
@@ -56,9 +55,8 @@ public class PersonController {
         try {
             PersonDTO savedValue = personService.save(personDTO);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 
@@ -68,9 +66,8 @@ public class PersonController {
         try {
             personService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 }

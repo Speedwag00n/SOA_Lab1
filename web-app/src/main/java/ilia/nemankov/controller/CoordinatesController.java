@@ -3,7 +3,6 @@ package ilia.nemankov.controller;
 import ilia.nemankov.dto.CoordinatesDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.CoordinatesService;
-import ilia.nemankov.utils.Utils;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -22,7 +21,7 @@ public class CoordinatesController {
 
     public CoordinatesController()throws NamingException {
         Context context = new ContextProviderImpl().getContext();
-        Object ref = context.lookup("java:global/pool/CoordinatesServiceImpl");
+        Object ref = context.lookup("pool/CoordinatesServiceImpl!ilia.nemankov.service.CoordinatesService");
         this.coordinatesService = (CoordinatesService) PortableRemoteObject.narrow(ref, CoordinatesService.class);
     }
 
@@ -56,9 +55,8 @@ public class CoordinatesController {
         try {
             CoordinatesDTO savedValue = coordinatesService.save(coordinate);
             return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch (Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 
@@ -68,9 +66,8 @@ public class CoordinatesController {
         try {
             coordinatesService.delete(id);
             return Response.status(HttpServletResponse.SC_OK).build();
-        } catch (Exception e) {
-            BadResponseException badResponseException = Utils.deserializeBadResponseException(e);
-            return Response.status(badResponseException.getResponseCode()).entity(badResponseException.getMessage()).build();
+        } catch(BadResponseException e) {
+            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
         }
     }
 }

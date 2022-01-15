@@ -6,7 +6,6 @@ import ilia.nemankov.entity.MPAARating;
 import ilia.nemankov.entity.Movie;
 import ilia.nemankov.mapper.MovieMapper;
 import ilia.nemankov.repository.*;
-import ilia.nemankov.utils.Utils;
 
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
@@ -35,48 +34,40 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDTO> findAll(FilterConfiguration filterConfiguration) throws Exception {
-        try {
-            validateOptions(filterConfiguration);
-            List<Movie> movies =  movieRepository.findAll(filterConfiguration);
+        validateOptions(filterConfiguration);
+        List<Movie> movies =  movieRepository.findAll(filterConfiguration);
 
-            List<MovieDTO> result = new ArrayList<>();
+        List<MovieDTO> result = new ArrayList<>();
 
-            for (Movie movie : movies) {
-                result.add(movieMapper.entityToDto(movie));
-            }
-
-            return result;
-        } catch (BadResponseException e) {
-            throw Utils.serializeBadResponseException(e);
+        for (Movie movie : movies) {
+            result.add(movieMapper.entityToDto(movie));
         }
+
+        return result;
     }
 
     @Override
-    public MovieDTO saveOrUpdate(MovieDTO dto) throws Exception {
-        try {
-            validateDTO(dto);
-            Movie movie = movieMapper.dtoToEntity(dto);
-            movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
-            if (movie.getCoordinates() == null) {
-                throw new BadResponseException("Could not found specified coordinates", HttpServletResponse.SC_BAD_REQUEST);
+    public MovieDTO saveOrUpdate(MovieDTO dto) throws BadResponseException {
+        validateDTO(dto);
+        Movie movie = movieMapper.dtoToEntity(dto);
+        movie.setCoordinates(coordinatesRepository.findById(movie.getCoordinates().getId()));
+        if (movie.getCoordinates() == null) {
+            throw new BadResponseException("Could not found specified coordinates", HttpServletResponse.SC_BAD_REQUEST);
+        }
+        if (movie.getScreenWriter() != null) {
+            movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
+            if (movie.getScreenWriter() == null) {
+                throw new BadResponseException("Could not found specified screen writer", HttpServletResponse.SC_BAD_REQUEST);
             }
-            if (movie.getScreenWriter() != null) {
-                movie.setScreenWriter(personRepository.findById(movie.getScreenWriter().getId()));
-                if (movie.getScreenWriter() == null) {
-                    throw new BadResponseException("Could not found specified screen writer", HttpServletResponse.SC_BAD_REQUEST);
-                }
-            }
+        }
 
-            if (movie.getId() == null || movieRepository.findById(movie.getId()) == null) {
-                movie.setCreationDate(new Date());
-                movieRepository.save(movie);
-                return movieMapper.entityToDto(movie);
-            } else {
-                Movie updatedValue = movieRepository.update(movie);
-                return movieMapper.entityToDto(updatedValue);
-            }
-        } catch (BadResponseException e) {
-            throw Utils.serializeBadResponseException(e);
+        if (movie.getId() == null || movieRepository.findById(movie.getId()) == null) {
+            movie.setCreationDate(new Date());
+            movieRepository.save(movie);
+            return movieMapper.entityToDto(movie);
+        } else {
+            Movie updatedValue = movieRepository.update(movie);
+            return movieMapper.entityToDto(updatedValue);
         }
     }
 
@@ -92,12 +83,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void delete(Long id) throws Exception {
-        try {
-            movieRepository.delete(id);
-        } catch (BadResponseException e) {
-            throw Utils.serializeBadResponseException(e);
-        }
+    public void delete(Long id) throws BadResponseException {
+        movieRepository.delete(id);
     }
 
     @Override

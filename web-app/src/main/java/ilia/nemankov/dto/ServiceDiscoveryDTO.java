@@ -9,6 +9,5 @@ public class ServiceDiscoveryDTO {
     private String name;
     private String address;
     private int port;
-    private boolean enableTagOverride;
 
 }

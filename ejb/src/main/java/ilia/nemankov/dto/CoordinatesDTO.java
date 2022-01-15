@@ -3,9 +3,11 @@ package ilia.nemankov.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
-public class CoordinatesDTO {
+public class CoordinatesDTO implements Serializable {
 
     public CoordinatesDTO(Long id) {
         this.id = id;

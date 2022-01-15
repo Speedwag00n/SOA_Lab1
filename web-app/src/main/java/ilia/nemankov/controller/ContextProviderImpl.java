@@ -1,6 +1,6 @@
 package ilia.nemankov.controller;
 
-import fish.payara.ejb.rest.client.RemoteEJBContextFactory;
+import org.jboss.naming.remote.client.InitialContextFactory;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -11,7 +11,7 @@ public class ContextProviderImpl implements ContextProvider {
 
     public Context getContext() throws NamingException {
         Properties props = new Properties();
-        props.put(Context.INITIAL_CONTEXT_FACTORY, RemoteEJBContextFactory.class.getName());
+        props.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactory.class.getName());
         props.put(Context.PROVIDER_URL, System.getenv("LAB1_PROVIDER_URL"));
 
         return new InitialContext(props);

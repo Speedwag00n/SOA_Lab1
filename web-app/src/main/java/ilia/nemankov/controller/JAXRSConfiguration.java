@@ -1,14 +1,15 @@
 package ilia.nemankov.controller;
 
+import com.google.gson.Gson;
 import ilia.nemankov.dto.ServiceDiscoveryDTO;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @ApplicationPath("api")
 public class JAXRSConfiguration extends Application {
@@ -16,7 +17,6 @@ public class JAXRSConfiguration extends Application {
     public JAXRSConfiguration() throws Exception {
         super();
 
-        Client client = ClientBuilder.newBuilder().build();
         String sdUrl = System.getenv("CONSUL_URL");
 
         ServiceDiscoveryDTO configuration = new ServiceDiscoveryDTO();
@@ -25,14 +25,13 @@ public class JAXRSConfiguration extends Application {
         configuration.setAddress(System.getenv("LAB1_IP"));
         configuration.setPort(Integer.valueOf(System.getenv("LAB1_PORT")));
 
-        Response response = client
-                .target(sdUrl + "/v1/agent/service/register")
-                .request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
+        HttpClient httpClient = HttpClientBuilder.create().build();
 
-        if (response.getStatus() != 200) {
-            throw new Exception("Failed to register service in Service discovery");
-        }
+        HttpPut request = new HttpPut(sdUrl + "/v1/agent/service/register");
+        StringEntity params = new StringEntity(new Gson().toJson(configuration));
+        request.addHeader("content-type", "application/x-www-form-urlencoded");
+        request.setEntity(params);
+        HttpResponse response = httpClient.execute(request);
     }
 
 }
