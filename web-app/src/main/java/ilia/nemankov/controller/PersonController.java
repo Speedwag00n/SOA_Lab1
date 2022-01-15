@@ -4,17 +4,20 @@ import ilia.nemankov.dto.PersonDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.PersonService;
 
+import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/persons")
-@Consumes({ "application/json" })
-@Produces({ "application/json" })
+@Stateless
+@WebService(
+        targetNamespace = "http://localhost:8090/ws/person"
+)
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class PersonController {
 
     private final PersonService personService;
@@ -25,49 +28,25 @@ public class PersonController {
         this.personService = (PersonService) PortableRemoteObject.narrow(ref, PersonService.class);
     }
 
-    @GET
-    @Path("/{id}")
-    public Response getPerson(@PathParam("id") Long id) {
-        PersonDTO person = personService.findById(id);
-
-        if (person != null) {
-            return Response.status(HttpServletResponse.SC_OK).entity(person).build();
-        } else {
-            return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
-        }
+    @WebMethod
+    public PersonDTO getPerson(Long id) {
+        return personService.findById(id);
     }
 
-    @GET
-    @Path("")
-    public Response getPersons() {
-        List<PersonDTO> persons = personService.findAll();
-
-        if (persons.size() > 0) {
-            return Response.status(HttpServletResponse.SC_OK).entity(persons).build();
-        } else {
-            return Response.status(HttpServletResponse.SC_NOT_FOUND).build();
-        }
+    @WebMethod
+    public List<PersonDTO> getPersons() {
+        return personService.findAll();
     }
 
-    @POST
-    @Path("")
-    public Response addPerson(PersonDTO personDTO) throws Exception {
-        try {
-            PersonDTO savedValue = personService.save(personDTO);
-            return Response.status(HttpServletResponse.SC_CREATED).entity(savedValue).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
-        }
+    @WebMethod
+    public boolean addPerson(PersonDTO personDTO) throws BadResponseException {
+        PersonDTO savedValue = personService.save(personDTO);
+        return true;
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response deleteCoordinates(@PathParam("id") Long id) throws Exception {
-        try {
-            personService.delete(id);
-            return Response.status(HttpServletResponse.SC_OK).build();
-        } catch(BadResponseException e) {
-            return Response.status(e.getResponseCode()).entity(e.getMessage()).build();
-        }
+    @WebMethod
+    public boolean deleteCoordinates(Long id) throws BadResponseException {
+        personService.delete(id);
+        return true;
     }
 }

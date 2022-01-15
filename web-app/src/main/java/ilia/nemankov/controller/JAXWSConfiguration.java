@@ -12,9 +12,9 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("api")
-public class JAXRSConfiguration extends Application {
+public class JAXWSConfiguration extends Application {
 
-    public JAXRSConfiguration() throws Exception {
+    public JAXWSConfiguration() throws Exception {
         super();
 
         String sdUrl = System.getenv("CONSUL_URL");
