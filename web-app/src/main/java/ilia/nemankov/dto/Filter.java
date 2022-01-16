@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 @Data
 @XmlRootElement(name = "filter")
@@ -18,7 +17,7 @@ public class Filter {
     @XmlElement
     private Integer page;
     @XmlElement
-    private List<String> order;
+    private String[] order;
     @XmlElement
-    private List<String> filter;
+    private String[] filter;
 }

@@ -6,6 +6,7 @@ import ilia.nemankov.service.CoordinatesService;
 
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.naming.Context;
@@ -29,8 +30,14 @@ public class CoordinatesController {
     }
 
     @WebMethod
-    public CoordinatesDTO getCoordinate(Long id) {
-        return coordinatesService.findById(id);
+    public CoordinatesDTO getCoordinate(@WebParam(name = "id") Long id) throws BadResponseException {
+        CoordinatesDTO value = coordinatesService.findById(id);
+
+        if (value != null) {
+            return value;
+        } else {
+            throw new BadResponseException("Not found", 404);
+        }
     }
 
     @WebMethod
@@ -39,12 +46,12 @@ public class CoordinatesController {
     }
 
     @WebMethod
-    public CoordinatesDTO addCoordinates(CoordinatesDTO coordinate) throws BadResponseException {
+    public CoordinatesDTO addCoordinates(@WebParam(name = "coordinate") CoordinatesDTO coordinate) throws BadResponseException {
         return coordinatesService.save(coordinate);
     }
 
     @WebMethod
-    public boolean deleteCoordinates(Long id) throws BadResponseException {
+    public boolean deleteCoordinates(@WebParam(name = "deleteId") Long id) throws BadResponseException {
         coordinatesService.delete(id);
         return true;
     }
