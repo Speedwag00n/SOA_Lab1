@@ -1,5 +1,6 @@
 package ilia.nemankov.controller;
 
+import ilia.nemankov.dto.Filter;
 import ilia.nemankov.dto.MovieDTO;
 import ilia.nemankov.service.BadResponseException;
 import ilia.nemankov.service.MovieService;
@@ -37,20 +38,19 @@ public class MovieController {
     }
 
     @WebMethod
-    public List<MovieDTO> getMovies(Integer count, Integer page,
-                              List<String> order, List<String> filter) throws Exception {
+    public List<MovieDTO> getMovies(Filter filter) throws Exception {
         FilterConfiguration filterConfiguration = new FilterConfiguration();
-        if (count != null && page != null) {
-            filterConfiguration.setCount(count);
-            filterConfiguration.setPage(page);
+        if (filter.getCount() != null && filter.getPage() != null) {
+            filterConfiguration.setCount(filter.getCount());
+            filterConfiguration.setPage(filter.getPage());
         }
 
-        if (order != null && order.size() > 0) {
-            filterConfiguration.setOrder(order);
+        if (filter.getOrder() != null && filter.getOrder().size() > 0) {
+            filterConfiguration.setOrder(filter.getOrder());
         }
 
-        if (filter != null && filter.size() > 0) {
-            filterConfiguration.setFilter(filter);
+        if (filter.getFilter() != null && filter.getFilter().size() > 0) {
+            filterConfiguration.setFilter(filter.getFilter());
         }
 
         return movieService.findAll(filterConfiguration);
