@@ -49,7 +49,7 @@ Vue.component(
                 this.$emit('deletemovie', movie);
             },
             formatCreationDate: function (movie) {
-                return moment(movie.creationDate, 'x').format('YYYY-MM-DD');
+                return movie.creationDate;
             }
         }
     }
@@ -627,26 +627,26 @@ Vue.component(
                 let movie = {
                     'name': this.name,
                     'coordinates': {
-                        'id': this.coordinates
+                        'id': Number(this.coordinates)
                     },
-                    'creationDate': moment(this.creationDate, 'YYYY-MM-DD').format('x') + '',
-                    'oscarsCount': this.oscarsCount,
-                    'goldenPalmCount': this.goldenPalmCount,
+                    'creationDate': this.creationDate,
+                    'oscarsCount': Number(this.oscarsCount),
+                    'goldenPalmCount': Number(this.goldenPalmCount),
                     'genre': this.genre
                 }
                 if (this.totalBoxOffice) {
-                    movie.totalBoxOffice = this.totalBoxOffice
+                    movie.totalBoxOffice = Number(this.totalBoxOffice)
                 }
                 if (this.mpaaRating) {
                     movie.mpaaRating = this.mpaaRating
                 }
                 if (this.screenWriter) {
                     movie.screenWriter = {
-                        'id': this.screenWriter
+                        'id': Number(this.screenWriter)
                     }
                 }
                 if (this.id) {
-                    movie.id = this.id
+                    movie.id = Number(this.id)
                 }
 
                 this.$emit('addmovie', movie);
@@ -655,13 +655,16 @@ Vue.component(
                 this.id = movie.id
                 this.name = movie.name
                 this.coordinates = movie.coordinates.id
-                this.creationDate = moment(movie.creationDate, 'x').format('YYYY-MM-DD')
+                this.creationDate = movie.creationDate
+                this.genre = movie.genre
                 this.oscarsCount = movie.oscarsCount
                 this.goldenPalmCount = movie.goldenPalmCount
                 this.totalBoxOffice = movie.totalBoxOffice
                 this.mpaaRating = movie.mpaaRating
-                this.screenWriter = movie.screenWriter.id
-                this.genre = movie.genre
+
+                if (movie.screenWriter) {
+                    this.screenWriter = movie.screenWriter.id
+                }
             }
         }
     }

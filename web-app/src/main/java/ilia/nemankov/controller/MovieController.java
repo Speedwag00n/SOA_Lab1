@@ -54,12 +54,12 @@ public class MovieController {
             filterConfiguration.setPage(filter.getPage());
         }
 
-        if (filter.getOrder() != null && filter.getOrder().length > 0) {
-            filterConfiguration.setOrder(Arrays.asList(filter.getOrder()));
+        if (filter.getOrder() != null && !filter.getOrder().isEmpty()) {
+            filterConfiguration.setOrder(Arrays.asList(filter.getOrder().split(";")));
         }
 
-        if (filter.getFilter() != null && filter.getFilter().length > 0) {
-            filterConfiguration.setFilter(Arrays.asList(filter.getFilter()));
+        if (filter.getFilter() != null && !filter.getFilter().isEmpty()) {
+            filterConfiguration.setFilter(Arrays.asList(filter.getFilter().split(";")));
         }
 
         return movieService.findAll(filterConfiguration);

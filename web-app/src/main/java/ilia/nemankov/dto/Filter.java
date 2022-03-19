@@ -17,7 +17,7 @@ public class Filter {
     @XmlElement
     private Integer page;
     @XmlElement
-    private String[] order;
+    private String order;
     @XmlElement
-    private String[] filter;
+    private String filter;
 }

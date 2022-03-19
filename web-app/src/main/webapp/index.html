@@ -50,72 +50,79 @@
                     }
                 }
 
-                console.log(filterInfo.orderBy1)
-                console.log(filterInfo.orderDirection1)
+                let orders = []
+                let filters = []
 
                 if (filterInfo.orderBy1 && filterInfo.orderDirection1) {
-                    params.push('order=' + filterInfo.orderBy1 + ',' + filterInfo.orderDirection1)
+                    orders.push('' + filterInfo.orderBy1 + ',' + filterInfo.orderDirection1)
                 }
                 if (filterInfo.orderBy2 && filterInfo.orderDirection2) {
-                    params.push('order=' + filterInfo.orderBy2 + ',' + filterInfo.orderDirection2)
+                    orders.push('' + filterInfo.orderBy2 + ',' + filterInfo.orderDirection2)
                 }
                 if (filterInfo.orderBy3 && filterInfo.orderDirection3) {
-                    params.push('order=' + filterInfo.orderBy3 + ',' + filterInfo.orderDirection3)
+                    orders.push('' + filterInfo.orderBy3 + ',' + filterInfo.orderDirection3)
                 }
                 if (filterInfo.orderBy4 && filterInfo.orderDirection4) {
-                    params.push('order=' + filterInfo.orderBy4 + ',' + filterInfo.orderDirection4)
+                    orders.push('' + filterInfo.orderBy4 + ',' + filterInfo.orderDirection4)
                 }
                 if (filterInfo.orderBy5 && filterInfo.orderDirection5) {
-                    params.push('order=' + filterInfo.orderBy5 + ',' + filterInfo.orderDirection5)
+                    orders.push('' + filterInfo.orderBy5 + ',' + filterInfo.orderDirection5)
                 }
                 if (filterInfo.orderBy6 && filterInfo.orderDirection6) {
-                    params.push('order=' + filterInfo.orderBy6 + ',' + filterInfo.orderDirection6)
+                    orders.push('' + filterInfo.orderBy6 + ',' + filterInfo.orderDirection6)
                 }
                 if (filterInfo.orderBy7 && filterInfo.orderDirection7) {
-                    params.push('order=' + filterInfo.orderBy7 + ',' + filterInfo.orderDirection7)
+                    orders.push('' + filterInfo.orderBy7 + ',' + filterInfo.orderDirection7)
                 }
                 if (filterInfo.orderBy8 && filterInfo.orderDirection8) {
-                    params.push('order=' + filterInfo.orderBy8 + ',' + filterInfo.orderDirection8)
+                    orders.push('' + filterInfo.orderBy8 + ',' + filterInfo.orderDirection8)
                 }
                 if (filterInfo.orderBy9 && filterInfo.orderDirection9) {
-                    params.push('order=' + filterInfo.orderBy9 + ',' + filterInfo.orderDirection9)
+                    orders.push('' + filterInfo.orderBy9 + ',' + filterInfo.orderDirection9)
                 }
 
                 if (filterInfo.filterById) {
-                    params.push('filter=id,==,' + filterInfo.filterById)
+                    filters.push('id,==,' + filterInfo.filterById)
                 }
                 if (filterInfo.filterByName) {
-                    params.push('filter=name,contains,' + filterInfo.filterByName)
+                    filters.push('name,contains,' + filterInfo.filterByName)
                 }
                 if (filterInfo.filterByCoordinates) {
-                    params.push('filter=coordinates,==,' + filterInfo.filterByCoordinates)
+                    filters.push('coordinates,==,' + filterInfo.filterByCoordinates)
                 }
                 if (filterInfo.filterByCreationDate && filterInfo.filterByCreationDateAction) {
-                    params.push('filter=creationDate,' + filterInfo.filterByCreationDateAction + ',' + filterInfo.filterByCreationDate)
+                    filters.push('creationDate,' + filterInfo.filterByCreationDateAction + ',' + filterInfo.filterByCreationDate)
                 }
                 if (filterInfo.filterByOscarCount && filterInfo.filterByOscarCountAction) {
-                    params.push('filter=oscarsCount,' + filterInfo.filterByOscarCountAction + ',' + filterInfo.filterByOscarCount)
+                    filters.push('oscarsCount,' + filterInfo.filterByOscarCountAction + ',' + filterInfo.filterByOscarCount)
                 }
                 if (filterInfo.filterByGoldenPalmCount && filterInfo.filterByGoldenPalmCountAction) {
-                    params.push('filter=goldenPalmCount,' + filterInfo.filterByGoldenPalmCountAction + ',' + filterInfo.filterByGoldenPalmCount)
+                    filters.push('goldenPalmCount,' + filterInfo.filterByGoldenPalmCountAction + ',' + filterInfo.filterByGoldenPalmCount)
                 }
                 if (filterInfo.filterByTotalBoxOffice && filterInfo.filterByTotalBoxOfficeAction) {
-                    params.push('filter=totalBoxOffice,' + filterInfo.filterByTotalBoxOfficeAction + ',' + filterInfo.filterByTotalBoxOffice)
+                    filters.push('totalBoxOffice,' + filterInfo.filterByTotalBoxOfficeAction + ',' + filterInfo.filterByTotalBoxOffice)
                 }
                 if (filterInfo.filterByRating) {
-                    params.push('filter=mpaaRating,==,' + filterInfo.filterByRating)
+                    filters.push('mpaaRating,==,' + filterInfo.filterByRating)
                 }
                 if (filterInfo.filterByScreenWriter) {
-                    params.push('filter=screenWriter,==,' + filterInfo.filterByScreenWriter)
+                    filters.push('screenWriter,==,' + filterInfo.filterByScreenWriter)
                 }
                 if (filterInfo.filterByGenre) {
-                    params.push('filter=genre,contains,' + filterInfo.filterByGenre)
+                    filters.push('genre,contains,' + filterInfo.filterByGenre)
+                }
+
+                if (orders) {
+                    params.push('order=' + orders.join(';'))
+                }
+                if (filters) {
+                    params.push('filter=' + filters.join(';'))
                 }
 
                 params = params.join('&')
 
                 this.$http.get(
-                    '/api/movies?' + params
+                    'http://localhost:8091/api/movies?' + params
                 ).then(
                     (response) => {
                         this.movies = response.body;
@@ -131,7 +138,7 @@
             },
             deleteMovie: function (movie) {
                 this.$http.delete(
-                    '/api/movies/' + movie.id
+                    'http://localhost:8091/api/movies/' + movie.id
                 ).then(
                     (response) => {
                         this.movies.splice(this.movies.indexOf(movie), 1);
@@ -145,7 +152,7 @@
             addMovie: function (movie) {
                 if (movie.id) {
                     this.$http.put(
-                        '/api/movies',
+                        'http://localhost:8091/api/movies',
                         movie
                     ).then(
                         (response) => {
@@ -164,7 +171,7 @@
                     );
                 } else {
                     this.$http.post(
-                        '/api/movies',
+                        'http://localhost:8091/api/movies',
                         movie
                     ).then(
                         (response) => {
@@ -183,7 +190,7 @@
             },
             calcAvrg: function () {
                 this.$http.get(
-                    '/api/movies/golden_palm_count/avrg',
+                    'http://localhost:8091/api/movies/golden_palm_count/avrg',
                 ).then(
                     (response) => {
                         this.goldenpalmcountavrg = response.body
@@ -197,7 +204,7 @@
         },
         created: function() {
             this.$http.get(
-                '/api/movies',
+                'http://localhost:8091/api/movies',
                 {
                 }
             ).then(
@@ -211,7 +218,7 @@
             );
 
             this.$http.get(
-                '/api/coordinates',
+                'http://localhost:8091/api/coordinates',
                 {
                 }
             ).then(
@@ -225,7 +232,7 @@
             );
 
             this.$http.get(
-                '/api/persons',
+                'http://localhost:8091/api/persons',
                 {
                 }
             ).then(
